@@ -71,11 +71,11 @@ sorting.forEach(function(button) {
             return drill.category === chosenCategory;
           });
 
+    sorting.forEach(function(btn) {
+      btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
     renderDrills(filteredCategory);
   });
 });
-
-sorting.forEach(function(btn) {
-  btn.classList.remove("active");
-});
-button.classList.add("active");
