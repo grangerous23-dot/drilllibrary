@@ -1,23 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drill Library</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.min.css">
     <link rel="stylesheet" href="drill.css">
 </head>
-<body>
-<header>
-<h1>Drill Library</h1>
-<nav>
-<button data-filter="all" class="filter-btn active">All</button>
-<button data-filter="individual" class="filter-btn">Individual</button>
-<button data-filter="group" class="filter-btn">Group</button>
-</nav>
-</header>
-<main id="drill-grid">
 
-</main>
-<script src="drill.js"></script>
+<body>
+    <header>
+        <h1>Drill Library</h1>
+        <nav>
+            <button data-filter="all" class="filter-btn active">All</button>
+            <button data-filter="individual" class="filter-btn">Individual</button>
+            <button data-filter="group" class="filter-btn">Group</button>
+        </nav>
+    </header>
+    <main id="drill-grid">
+
+    </main>
+    <dialog id="drill-dialog">
+  <article>
+    <div id="drill-detail"></div>
+    <button id="close-dialog">Close</button>
+  </article>
+</dialog>
+    <script src="drill.js"></script>
 </body>
-</h
+
+</html>

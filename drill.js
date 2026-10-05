@@ -18,6 +18,44 @@ const drills = [
     equipment: "ball, wall",
     videoUrl: "https://www.youtube.com/embed/example2",
     description: "Improve passing accuracy, high repetitions."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
   },
   {
     id: 3,
@@ -44,9 +82,9 @@ const drills = [
 function renderDrills(drillList) {
   const container = document.getElementById("drill-grid");
 
-  const cardsHTML = drillList.map(function(drill) {
+  const cardsHTML = drillList.map(function (drill) {
     return `
-      <div class="drill-card">
+      <div data-id="${drill.id}" class="drill-card">
         <h3>${drill.name}</h3>
         <p>Skill: ${drill.skill}</p>
         <p>Difficulty: ${drill.difficulty}</p>
@@ -60,22 +98,46 @@ function renderDrills(drillList) {
 renderDrills(drills);
 
 const sorting = document.querySelectorAll(".filter-btn");
-sorting.forEach(function(button) {
-  button.addEventListener("click", function() {
+sorting.forEach(function (button) {
+  button.addEventListener("click", function () {
     const chosenCategory = button.dataset.filter;
 
     const filteredCategory =
       chosenCategory === "all"
         ? drills
-        : drills.filter(function(drill) {
-            return drill.category === chosenCategory;
-          });
+        : drills.filter(function (drill) {
+          return drill.category === chosenCategory;
+        });
 
-    sorting.forEach(function(btn) {
+    sorting.forEach(function (btn) {
       btn.classList.remove("active");
     });
 
     button.classList.add("active");
     renderDrills(filteredCategory);
   });
+  const grid = document.getElementById("drill-grid");
+
+grid.addEventListener("click", function(event) {
+  const card = event.target.closest(".drill-card");
+  if (!card) return;
+
+  const drill = drills.find(function(d) {
+    return d.id === Number(card.dataset.id);
+  });
+
+  const detail = document.getElementById("drill-detail");
+  detail.innerHTML = `
+    <h2>${drill.name}</h2>
+    <p>Skill: ${drill.skill}</p>
+    <p>Difficulty: ${drill.difficulty}</p>
+    <p>Equipment: ${drill.equipment}</p>
+    <p>${drill.description}</p>
+  `;
+
+  document.getElementById("drill-dialog").showModal();
+});
+document.getElementById("close-dialog").addEventListener("click", function() {
+  document.getElementById("drill-dialog").close();
+});
 });
