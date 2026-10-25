@@ -10,22 +10,35 @@
 </head>
 
 <body>
-    <header>
-        <h1>Drill Library</h1>
-        <nav>
-            <button data-filter="all" class="filter-btn active">All</button>
-            <button data-filter="individual" class="filter-btn">Individual</button>
-            <button data-filter="group" class="filter-btn">Group</button>
-        </nav>
-    </header>
-    <main id="drill-grid">
+  <header>
+  <h1>Drill Library</h1>
+  <nav>
+    <button data-tab="drills-view" class="tab-btn active">Drills</button>
+    <button data-tab="session-view" class="tab-btn">My Session</button>
+  </nav>
+</header>
 
-    </main>
-    <dialog id="drill-dialog">
+<main>
+  <section id="drills-view">
+    <nav>
+      <button data-filter="all" class="filter-btn active">All</button>
+      <button data-filter="individual" class="filter-btn">Individual</button>
+      <button data-filter="group" class="filter-btn">Group</button>
+    </nav>
+    <div id="drill-grid"></div>
+  </section>
+
+  <section id="session-view" hidden>
+    <h2>My Session</h2>
+    <ul id="session-list"></ul>
+  </section>
+</main>
+<dialog id="drill-dialog">
   <article>
     <div id="drill-detail"></div>
     <button id="close-dialog">Close</button>
   </article>
+</dialog>
 </dialog>
     <script src="drill.js"></script>
 </body>

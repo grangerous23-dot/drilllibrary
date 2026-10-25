@@ -1,3 +1,4 @@
+let session = [];
 const drills = [
   {
     id: 1,
@@ -7,7 +8,7 @@ const drills = [
     difficulty: "beginner",
     equipment: "cones",
     description: "Dribble through a line of cones using both feet.",
-    gif: "images/cone-weave.gif"
+    gif: "images/cone-weave.gif",
   },
   {
     id: 2,
@@ -17,7 +18,7 @@ const drills = [
     difficulty: "beginner",
     equipment: "ball, wall",
     description: "Improve passing accuracy, high repetitions.",
-    gif: "images/wall-passing.gif"
+    gif: "images/wall-passing.gif",
   },
   {
     id: 3,
@@ -49,7 +50,18 @@ const drills = [
     difficulty: "intermediate",
     equipment: "ball",
     description: "Keep possession in a small area while defenders try to intercept.",
-    gif: "images/rondos.gif"
+    gif: "images/rondos.gif",
+  },
+  {
+    id: 6,
+    name: "2v2 Small-Sided",
+    category: "group",
+    playerCount: 4,
+    skill: "dribbling, passing",
+    difficulty: "intermediate",
+    equipment: "ball, goal",
+    description: "A 2v2 game focusing on dribbling and passing.",
+    gif: "images/2v2.gif",
   }
 ];
 
@@ -119,12 +131,19 @@ if (grid) {
         </div>
         ${drill.gif ? `<div class="detail-diagram"><img src="${drill.gif}" alt="${drill.name} diagram"></div>` : ""}
       </div>
+      <button id="add-to-session">Add to session</button>
     `;
 
     const dialog = document.getElementById("drill-dialog");
     if (dialog && typeof dialog.showModal === "function") {
       dialog.showModal();
     }
+      document.getElementById("add-to-session").addEventListener("click", function() {
+            console.log("button clicked");
+    session.push({ id: drill.id, minutes: 10 });
+    console.log(session);
+        renderSession();
+  });
   });
 }
 
@@ -137,3 +156,29 @@ if (closeDialogButton) {
     }
   });
 }
+function renderSession() {
+    console.log("renderSession running", session);
+  const list = document.getElementById("session-list");
+
+  const itemsHTML = session.map(function(item) {
+    const drill = drills.find(function(d) {
+      return d.id === item.id;
+    });
+    return `<li>${drill.name} – ${item.minutes} min</li>`;
+  });
+
+  list.innerHTML = itemsHTML.join("");
+}
+const tabs = document.querySelectorAll(".tab-btn");
+
+tabs.forEach(function(tab) {
+  tab.addEventListener("click", function() {
+    tabs.forEach(function(t) {
+      t.classList.remove("active");
+    });
+    tab.classList.add("active");
+
+    document.getElementById("drills-view").hidden = tab.dataset.tab !== "drills-view";
+    document.getElementById("session-view").hidden = tab.dataset.tab !== "session-view";
+  });
+});
