@@ -6,8 +6,8 @@ const drills = [
     skill: "dribbling",
     difficulty: "beginner",
     equipment: "cones",
-    videoUrl: "https://www.youtube.com/embed/example1",
-    description: "Dribble through a line of cones using both feet."
+    description: "Dribble through a line of cones using both feet.",
+    gif: "images/cone-weave.gif"
   },
   {
     id: 2,
@@ -16,46 +16,8 @@ const drills = [
     skill: "passing",
     difficulty: "beginner",
     equipment: "ball, wall",
-    videoUrl: "https://www.youtube.com/embed/example2",
-    description: "Improve passing accuracy, high repetitions."
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+    description: "Improve passing accuracy, high repetitions.",
+    gif: "images/wall-passing.gif"
   },
   {
     id: 3,
@@ -64,8 +26,8 @@ const drills = [
     skill: "ball control",
     difficulty: "beginner",
     equipment: "ball",
-    videoUrl: "https://www.youtube.com/embed/example3",
-    description: "Launch ball into air, control with foot."
+    description: "Launch ball into air, control with foot.",
+    gif: "images/first-touch-game.gif"
   },
   {
     id: 4,
@@ -75,12 +37,25 @@ const drills = [
     skill: "dribbling, defending",
     difficulty: "intermediate",
     equipment: "ball, goal",
-    videoUrl: "https://www.youtube.com/embed/example4",
-    description: "Practice attacking and defending in a 1v1 scenario."
+    description: "Practice attacking and defending in a 1v1 scenario.",
+    gif: "images/1v1-attack-defend.gif"
+  },
+  {
+    id: 5,
+    name: "Rondos",
+    category: "group",
+    playerCount: 7,
+    skill: "passing, ball control",
+    difficulty: "intermediate",
+    equipment: "ball",
+    description: "Keep possession in a small area while defenders try to intercept.",
+    gif: "images/rondos.gif"
   }
 ];
+
 function renderDrills(drillList) {
   const container = document.getElementById("drill-grid");
+  if (!container) return;
 
   const cardsHTML = drillList.map(function (drill) {
     return `
@@ -106,8 +81,8 @@ sorting.forEach(function (button) {
       chosenCategory === "all"
         ? drills
         : drills.filter(function (drill) {
-          return drill.category === chosenCategory;
-        });
+            return drill.category === chosenCategory;
+          });
 
     sorting.forEach(function (btn) {
       btn.classList.remove("active");
@@ -116,28 +91,49 @@ sorting.forEach(function (button) {
     button.classList.add("active");
     renderDrills(filteredCategory);
   });
-  const grid = document.getElementById("drill-grid");
+});
 
-grid.addEventListener("click", function(event) {
-  const card = event.target.closest(".drill-card");
-  if (!card) return;
+const grid = document.getElementById("drill-grid");
+if (grid) {
+  grid.addEventListener("click", function (event) {
+    const card = event.target.closest(".drill-card");
+    if (!card) return;
 
-  const drill = drills.find(function(d) {
-    return d.id === Number(card.dataset.id);
+    const drill = drills.find(function (d) {
+      return d.id === Number(card.dataset.id);
+    });
+
+    if (!drill) return;
+
+    const detail = document.getElementById("drill-detail");
+    if (!detail) return;
+
+    detail.innerHTML = `
+      <h2>${drill.name}</h2>
+      <div class="detail-layout">
+        <div class="detail-text">
+          <p>Skill: ${drill.skill}</p>
+          <p>Difficulty: ${drill.difficulty}</p>
+          <p>Equipment: ${drill.equipment || "N/A"}</p>
+          <p>${drill.description}</p>
+        </div>
+        ${drill.gif ? `<div class="detail-diagram"><img src="${drill.gif}" alt="${drill.name} diagram"></div>` : ""}
+      </div>
+    `;
+
+    const dialog = document.getElementById("drill-dialog");
+    if (dialog && typeof dialog.showModal === "function") {
+      dialog.showModal();
+    }
   });
+}
 
-  const detail = document.getElementById("drill-detail");
-  detail.innerHTML = `
-    <h2>${drill.name}</h2>
-    <p>Skill: ${drill.skill}</p>
-    <p>Difficulty: ${drill.difficulty}</p>
-    <p>Equipment: ${drill.equipment}</p>
-    <p>${drill.description}</p>
-  `;
-
-  document.getElementById("drill-dialog").showModal();
-});
-document.getElementById("close-dialog").addEventListener("click", function() {
-  document.getElementById("drill-dialog").close();
-});
-});
+const closeDialogButton = document.getElementById("close-dialog");
+if (closeDialogButton) {
+  closeDialogButton.addEventListener("click", function () {
+    const dialog = document.getElementById("drill-dialog");
+    if (dialog && typeof dialog.close === "function") {
+      dialog.close();
+    }
+  });
+}
