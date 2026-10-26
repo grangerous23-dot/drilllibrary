@@ -3,24 +3,16 @@ nav {
   justify-content: flex-start;
   gap: 0.5rem;
 }
-.filter-btn {
+.filter-btn,
+.tab-btn {
   background: transparent;
   color: var(--pico-primary);
-  .filter-btn,
-  .tab-btn {
-  background: transparent;
-  color: var(--pico-primary);
-}
 }
 
-.filter-btn.active {
-  background: var(--pico-primary-background);
-  color: var(--pico-primary-inverse);
-  .filter-btn.active,
+.filter-btn.active,
 .tab-btn.active {
   background: var(--pico-primary-background);
   color: var(--pico-primary-inverse);
-}
 }
 #drill-grid {
   display: grid;
@@ -83,8 +75,114 @@ dialog article {
     flex-direction: column;
   }
 }
-.minutes-input {
-  width: 5rem;
-  display: inline-block;
-  margin: 0 0.5rem;
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- Drill library ---------- */
+
+.filters {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .filters {
+    grid-template-columns: 1fr;
+  }
+}
+
+.drill-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.drill-card:hover,
+.drill-card:focus-visible {
+  border-color: var(--pico-primary);
+}
+
+.card-add-btn {
+  margin-top: auto;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.9rem;
+}
+
+/* ---------- Session planner ---------- */
+
+#session-list {
+  padding-left: 1.5rem;
+}
+
+.session-item {
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.session-item-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.item-minutes {
+  color: var(--pico-muted-color);
+}
+
+.item-buttons {
+  margin-left: auto;
+  display: flex;
+  gap: 0.25rem;
+}
+
+.item-buttons button {
+  padding: 0.1rem 0.6rem;
+  margin: 0;
+  width: auto;
+}
+
+.session-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.session-fields label {
+  flex: 1 1 8rem;
+  margin: 0;
+}
+
+.session-fields input,
+.session-fields select {
+  margin-bottom: 0;
+}
+
+#session-total {
+  font-weight: bold;
+}
+
+.session-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* When printing, show only the session plan */
+@media print {
+  header nav,
+  #drills-view,
+  .session-actions,
+  .item-buttons,
+  #session-empty {
+    display: none !important;
+  }
+
+  #session-view[hidden] {
+    display: block !important;
+  }
 }

@@ -14,24 +14,42 @@
   <h1>Drill Library</h1>
   <nav>
     <button data-tab="drills-view" class="tab-btn active">Drills</button>
-    <button data-tab="session-view" class="tab-btn">My Session</button>
+    <button data-tab="session-view" class="tab-btn">My Session <span id="session-count"></span></button>
   </nav>
 </header>
 
 <main>
   <section id="drills-view">
+    <div class="filters">
+      <input type="search" id="search" placeholder="Search drills..." aria-label="Search drills">
+      <select id="skill-filter" aria-label="Skill">
+        <option value="all">All skills</option>
+      </select>
+      <select id="difficulty-filter" aria-label="Difficulty">
+        <option value="all">All levels</option>
+        <option value="beginner">Beginner</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="advanced">Advanced</option>
+      </select>
+    </div>
     <nav>
       <button data-filter="all" class="filter-btn active">All</button>
       <button data-filter="individual" class="filter-btn">Individual</button>
       <button data-filter="group" class="filter-btn">Group</button>
     </nav>
     <div id="drill-grid"></div>
+    <p id="no-results" hidden>No drills match your filters.</p>
   </section>
 
   <section id="session-view" hidden>
-    <h2>My Session</h2>
-    <ul id="session-list"></ul>
+    <input type="text" id="session-name" placeholder="Session name (e.g. U12 Tuesday Practice)" aria-label="Session name">
+    <p id="session-empty">No drills yet. Go to the Drills tab and click "Add to session".</p>
+    <ol id="session-list"></ol>
     <p id="session-total"></p>
+    <div class="session-actions">
+      <button id="print-session">Print session</button>
+      <button id="clear-session" class="secondary">Clear session</button>
+    </div>
   </section>
 </main>
 <dialog id="drill-dialog">
@@ -39,7 +57,6 @@
     <div id="drill-detail"></div>
     <button id="close-dialog">Close</button>
   </article>
-</dialog>
 </dialog>
     <script src="drill.js"></script>
 </body>
