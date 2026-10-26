@@ -319,6 +319,8 @@ if (closeDialogButton) {
 // ---------- Session planner ----------
 
 let sessionName = "";
+// The id of the saved session that's open in My Session, or null if it hasn't been saved yet
+let currentSessionId = null;
 
 function addToSession(drillId) {
   const drill = findDrill(drillId);
@@ -518,36 +520,43 @@ document.getElementById("session-name").addEventListener("input", function (even
   saveSession();
 });
 
-const confirmDialog = document.getElementById("confirm-dialog");
+// ---------- "Are you sure?" popup ----------
+// Use it like: askConfirm("Delete?", "This can't be undone.", "Delete", function () { ...do it... });
 
-document.getElementById("clear-session").addEventListener("click", function () {
+const confirmDialog = document.getElementById("confirm-dialog");
+let onConfirm = null;
+
+function askConfirm(title, message, buttonText, callback) {
+  document.getElementById("confirm-title").textContent = title;
+  document.getElementById("confirm-message").textContent = message;
+  document.getElementById("confirm-ok").textContent = buttonText;
+  onConfirm = callback;
   confirmDialog.showModal();
-});
+}
 
 document.getElementById("confirm-cancel").addEventListener("click", function () {
   confirmDialog.close();
 });
 
-document.getElementById("confirm-clear").addEventListener("click", function () {
+document.getElementById("confirm-ok").addEventListener("click", function () {
   confirmDialog.close();
-  session = [];
-  sessionName = "";
-  document.getElementById("session-name").value = "";
-  renderSession();
+  if (onConfirm) onConfirm();
 });
 
 document.getElementById("print-session").addEventListener("click", function () {
   window.print();
 });
 
-// Save the session in the browser so it's still there after a refresh.
-// (Later this will be saved to the coach's account instead.)
+// Keep the session you're working on in the browser so it's still there after a refresh.
+// (Clicking "Save session" is different: that adds it to Saved Sessions - see sessions.js.)
 function saveSession() {
   try {
-    localStorage.setItem("drill-session", JSON.stringify({ name: sessionName, items: session }));
+    localStorage.setItem("drill-session", JSON.stringify({ name: sessionName, items: session, savedId: currentSessionId }));
   } catch (error) {
     // Storage can be blocked (e.g. private browsing) - the planner still works, it just won't be saved
   }
+  // updateSaveStatus is in sessions.js, which loads after this file
+  if (typeof updateSaveStatus === "function") updateSaveStatus();
 }
 
 function loadSession() {
@@ -555,6 +564,7 @@ function loadSession() {
     const saved = JSON.parse(localStorage.getItem("drill-session"));
     if (!saved) return;
     sessionName = saved.name || "";
+    currentSessionId = saved.savedId || null;
     // Skip any drills that no longer exist in the library
     session = (saved.items || []).filter(function (item) {
       return findDrill(item.id);
@@ -574,15 +584,16 @@ const tabs = document.querySelectorAll(".tab-btn");
 
 tabs.forEach(function (tab) {
   tab.addEventListener("click", function () {
-    tabs.forEach(function (t) {
-      t.classList.remove("active");
-    });
-    tab.classList.add("active");
-
-    document.getElementById("drills-view").hidden = tab.dataset.tab !== "drills-view";
-    document.getElementById("session-view").hidden = tab.dataset.tab !== "session-view";
+    showTab(tab.dataset.tab);
   });
 });
+
+function showTab(viewId) {
+  tabs.forEach(function (t) {
+    t.classList.toggle("active", t.dataset.tab === viewId);
+    document.getElementById(t.dataset.tab).hidden = t.dataset.tab !== viewId;
+  });
+}
 
 // ---------- Start ----------
 
