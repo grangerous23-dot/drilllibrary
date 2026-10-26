@@ -44,7 +44,7 @@
   <section id="session-view" hidden>
     <input type="text" id="session-name" placeholder="Session name (e.g. U12 Tuesday Practice)" aria-label="Session name">
     <p id="session-empty">No drills yet. Go to the Drills tab and click "Add to session".</p>
-    <ol id="session-list"></ol>
+    <div id="session-list"></div>
     <p id="session-total"></p>
     <div class="session-actions">
       <button id="print-session">Print session</button>
@@ -56,6 +56,16 @@
   <article>
     <div id="drill-detail"></div>
     <button id="close-dialog">Close</button>
+  </article>
+</dialog>
+<dialog id="confirm-dialog">
+  <article>
+    <h3>Clear this session?</h3>
+    <p>This removes every drill from your session. You can't undo this.</p>
+    <div class="confirm-buttons">
+      <button id="confirm-cancel" class="secondary">Cancel</button>
+      <button id="confirm-clear">Clear session</button>
+    </div>
   </article>
 </dialog>
     <script src="drill.js"></script>
