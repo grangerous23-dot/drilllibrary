@@ -62,7 +62,55 @@ const drills = [
     equipment: "ball, goal",
     description: "A 2v2 game focusing on dribbling and passing.",
     gif: "images/2v2.gif",
+  },
+  {
+    id: 7,
+    name: "Dynamic Stretching",
+    category: "group",
+    phase: "warmup",
+    skill: "fitness",
+    difficulty: "beginner",
+    equipment: "cones",
+    description: "Jog between two lines of cones doing high knees, butt kicks, side shuffles and leg swings."
+  },
+  {
+    id: 8,
+    name: "Passing Pairs Warm-up",
+    category: "group",
+    phase: "warmup",
+    playerCount: 2,
+    skill: "passing",
+    difficulty: "beginner",
+    equipment: "ball",
+    description: "Partners pass back and forth at walking pace, then jogging, using both feet."
+  },
+  {
+    id: 9,
+    name: "Light Jog and Static Stretch",
+    category: "group",
+    phase: "cooldown",
+    skill: "fitness",
+    difficulty: "beginner",
+    equipment: "none",
+    description: "Two slow laps of the field, then hold each stretch (quads, hamstrings, calves, hips) for 20-30 seconds."
+  },
+  {
+    id: 10,
+    name: "Juggling Cool-down",
+    category: "individual",
+    phase: "cooldown",
+    skill: "ball control",
+    difficulty: "beginner",
+    equipment: "ball",
+    description: "Relaxed juggling at your own pace to bring the heart rate down while keeping a touch on the ball."
   }
+];
+
+// Which part of a session a drill goes in by default
+const sessionParts = [
+  { value: "warmup", label: "Warm-up" },
+  { value: "main", label: "Main session" },
+  { value: "cooldown", label: "Cool-down" }
 ];
 
 // ---------- Drill library ----------
@@ -80,6 +128,12 @@ function drillSkills(drill) {
   });
 }
 
+function partLabel(value) {
+  return sessionParts.find(function (part) {
+    return part.value === value;
+  }).label;
+}
+
 function findDrill(id) {
   return drills.find(function (d) {
     return d.id === id;
@@ -93,6 +147,7 @@ function renderDrills(drillList) {
   const cardsHTML = drillList.map(function (drill) {
     return `
       <div data-id="${drill.id}" class="drill-card" tabindex="0" role="button">
+        ${drill.phase ? `<span class="phase-tag">${partLabel(drill.phase)}</span>` : ""}
         <h3>${drill.name}</h3>
         <p>Skill: ${drill.skill}</p>
         <p>Difficulty: ${drill.difficulty}</p>
@@ -111,7 +166,11 @@ function applyFilters() {
 
   const filtered = drills.filter(function (drill) {
     if (filters.category !== "all" && drill.category !== filters.category) return false;
-    if (filters.difficulty !== "all" && drill.difficulty !== filters.difficulty) return false;
+    if (filters.difficulty === "warmup" || filters.difficulty === "cooldown") {
+      if (drill.phase !== filters.difficulty) return false;
+    } else if (filters.difficulty !== "all" && drill.difficulty !== filters.difficulty) {
+      return false;
+    }
     if (filters.skill !== "all" && !drillSkills(drill).includes(filters.skill)) return false;
     if (search) {
       const text = (drill.name + " " + drill.description + " " + drill.skill).toLowerCase();
@@ -248,7 +307,9 @@ if (closeDialogButton) {
 let sessionName = "";
 
 function addToSession(drillId) {
-  session.push({ id: drillId, type: "time", minutes: 10, reps: 10, sets: 3, work: 60, rest: 30 });
+  const drill = findDrill(drillId);
+  const part = drill.phase || "main";
+  session.push({ id: drillId, part: part, type: "time", minutes: 10, reps: 10, sets: 3, work: 60, rest: 30 });
   renderSession();
 }
 
@@ -286,35 +347,62 @@ function sessionFields(item, index) {
   `;
 }
 
+function renderItem(item, index) {
+  const drill = findDrill(item.id);
+  const isFirst = previousInPart(index) === -1;
+  const isLast = nextInPart(index) === -1;
+
+  return `
+    <li class="session-item">
+      <div class="session-item-head">
+        <strong>${drill.name}</strong>
+        <span class="item-minutes">${formatMinutes(itemMinutes(item))} min</span>
+        <span class="item-buttons">
+          <button data-action="up" data-index="${index}" aria-label="Move up" ${isFirst ? "disabled" : ""}>↑</button>
+          <button data-action="down" data-index="${index}" aria-label="Move down" ${isLast ? "disabled" : ""}>↓</button>
+          <button data-action="remove" data-index="${index}" aria-label="Remove">✕</button>
+        </span>
+      </div>
+      <div class="session-fields">
+        <label>Part
+          <select class="session-input" data-index="${index}" data-field="part">
+            ${sessionParts.map(function (part) {
+              return `<option value="${part.value}" ${item.part === part.value ? "selected" : ""}>${part.label}</option>`;
+            }).join("")}
+          </select>
+        </label>
+        <label>Type
+          <select class="session-input" data-index="${index}" data-field="type">
+            <option value="time" ${item.type === "time" ? "selected" : ""}>Time</option>
+            <option value="timeReps" ${item.type === "timeReps" ? "selected" : ""}>Time + reps</option>
+            <option value="sets" ${item.type === "sets" ? "selected" : ""}>Sets (work / rest)</option>
+          </select>
+        </label>
+        ${sessionFields(item, index)}
+      </div>
+    </li>
+  `;
+}
+
 function renderSession() {
-  const itemsHTML = session.map(function (item, index) {
-    const drill = findDrill(item.id);
+  const partsHTML = sessionParts.map(function (part) {
+    let itemsHTML = "";
+    session.forEach(function (item, index) {
+      if (item.part === part.value) itemsHTML += renderItem(item, index);
+    });
+
     return `
-      <li class="session-item">
-        <div class="session-item-head">
-          <strong>${drill.name}</strong>
-          <span class="item-minutes">${formatMinutes(itemMinutes(item))} min</span>
-          <span class="item-buttons">
-            <button data-action="up" data-index="${index}" aria-label="Move up" ${index === 0 ? "disabled" : ""}>↑</button>
-            <button data-action="down" data-index="${index}" aria-label="Move down" ${index === session.length - 1 ? "disabled" : ""}>↓</button>
-            <button data-action="remove" data-index="${index}" aria-label="Remove">✕</button>
-          </span>
-        </div>
-        <div class="session-fields">
-          <label>Type
-            <select class="session-input" data-index="${index}" data-field="type">
-              <option value="time" ${item.type === "time" ? "selected" : ""}>Time</option>
-              <option value="timeReps" ${item.type === "timeReps" ? "selected" : ""}>Time + reps</option>
-              <option value="sets" ${item.type === "sets" ? "selected" : ""}>Sets (work / rest)</option>
-            </select>
-          </label>
-          ${sessionFields(item, index)}
-        </div>
-      </li>
+      <div class="session-part" data-part="${part.value}">
+        <h3>${part.label} <span class="part-minutes"></span></h3>
+        ${itemsHTML
+          ? `<ol>${itemsHTML}</ol>`
+          : `<p class="part-empty">No ${part.label.toLowerCase()} drills yet.</p>`}
+      </div>
     `;
   });
 
-  document.getElementById("session-list").innerHTML = itemsHTML.join("");
+  document.getElementById("session-list").innerHTML = partsHTML.join("");
+  document.getElementById("session-list").hidden = session.length === 0;
   document.getElementById("session-empty").hidden = session.length > 0;
   document.querySelector(".session-actions").hidden = session.length === 0;
   document.getElementById("session-count").textContent = session.length ? "(" + session.length + ")" : "";
@@ -322,11 +410,35 @@ function renderSession() {
   saveSession();
 }
 
+// The index of the drill above/below this one in the same part, or -1 if there isn't one
+function previousInPart(index) {
+  for (let i = index - 1; i >= 0; i--) {
+    if (session[i].part === session[index].part) return i;
+  }
+  return -1;
+}
+
+function nextInPart(index) {
+  for (let i = index + 1; i < session.length; i++) {
+    if (session[i].part === session[index].part) return i;
+  }
+  return -1;
+}
+
 function renderTotal() {
   let total = 0;
 
   session.forEach(function (item) {
     total = total + itemMinutes(item);
+  });
+
+  sessionParts.forEach(function (part) {
+    let partTotal = 0;
+    session.forEach(function (item) {
+      if (item.part === part.value) partTotal = partTotal + itemMinutes(item);
+    });
+    const label = document.querySelector(`.session-part[data-part="${part.value}"] .part-minutes`);
+    if (label) label.textContent = partTotal ? formatMinutes(partTotal) + " min" : "";
   });
 
   document.getElementById("session-total").textContent =
@@ -344,6 +456,15 @@ document.getElementById("session-list").addEventListener("input", function (even
   if (field === "type") {
     item.type = event.target.value;
     renderSession(); // different type = different boxes, so redraw
+    return;
+  }
+
+  if (field === "part") {
+    item.part = event.target.value;
+    // Move it to the end of the list so it shows up last in its new part
+    session.splice(index, 1);
+    session.push(item);
+    renderSession();
     return;
   }
 
@@ -366,12 +487,13 @@ document.getElementById("session-list").addEventListener("click", function (even
 
   if (action === "remove") {
     session.splice(index, 1);
-  } else if (action === "up" && index > 0) {
-    const item = session.splice(index, 1)[0];
-    session.splice(index - 1, 0, item);
-  } else if (action === "down" && index < session.length - 1) {
-    const item = session.splice(index, 1)[0];
-    session.splice(index + 1, 0, item);
+  } else if (action === "up" || action === "down") {
+    const other = action === "up" ? previousInPart(index) : nextInPart(index);
+    if (other !== -1) {
+      const item = session[index];
+      session[index] = session[other];
+      session[other] = item;
+    }
   }
 
   renderSession();
@@ -382,8 +504,18 @@ document.getElementById("session-name").addEventListener("input", function (even
   saveSession();
 });
 
+const confirmDialog = document.getElementById("confirm-dialog");
+
 document.getElementById("clear-session").addEventListener("click", function () {
-  if (!confirm("Remove all drills from this session?")) return;
+  confirmDialog.showModal();
+});
+
+document.getElementById("confirm-cancel").addEventListener("click", function () {
+  confirmDialog.close();
+});
+
+document.getElementById("confirm-clear").addEventListener("click", function () {
+  confirmDialog.close();
   session = [];
   sessionName = "";
   document.getElementById("session-name").value = "";
@@ -412,6 +544,9 @@ function loadSession() {
     // Skip any drills that no longer exist in the library
     session = (saved.items || []).filter(function (item) {
       return findDrill(item.id);
+    });
+    session.forEach(function (item) {
+      if (!item.part) item.part = "main";
     });
   } catch (error) {
     session = [];
