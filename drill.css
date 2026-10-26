@@ -3,24 +3,16 @@ nav {
   justify-content: flex-start;
   gap: 0.5rem;
 }
-.filter-btn {
+.filter-btn,
+.tab-btn {
   background: transparent;
   color: var(--pico-primary);
-  .filter-btn,
-  .tab-btn {
-  background: transparent;
-  color: var(--pico-primary);
-}
 }
 
-.filter-btn.active {
-  background: var(--pico-primary-background);
-  color: var(--pico-primary-inverse);
-  .filter-btn.active,
+.filter-btn.active,
 .tab-btn.active {
   background: var(--pico-primary-background);
   color: var(--pico-primary-inverse);
-}
 }
 #drill-grid {
   display: grid;

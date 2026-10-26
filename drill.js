@@ -138,12 +138,10 @@ if (grid) {
     if (dialog && typeof dialog.showModal === "function") {
       dialog.showModal();
     }
-      document.getElementById("add-to-session").addEventListener("click", function() {
-            console.log("button clicked");
-    session.push({ id: drill.id, type: "time", minutes: 10, reps: 10, sets: 3, work: 60, rest: 30 });
-  });
-    console.log(session);
-        renderSession();
+    document.getElementById("add-to-session").addEventListener("click", function () {
+      session.push({ id: drill.id, type: "time", minutes: 10, reps: 10, sets: 3, work: 60, rest: 30 });
+      renderSession();
+    });
   });
 }
 
