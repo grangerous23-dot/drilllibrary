@@ -87,10 +87,11 @@ dialog {
   gap: 0.5rem;
 }
 
-/* Drills / My Session tabs: each takes half the page width */
+/* Tabs: they share the page width equally */
 header nav {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -244,19 +245,19 @@ header nav .tab-btn {
   padding: 1.5rem;
 }
 
-#confirm-dialog .confirm-buttons {
+.confirm-buttons {
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
   margin-top: 1.5rem;
 }
 
-#confirm-dialog .confirm-buttons button {
+.confirm-buttons button {
   width: auto;
   margin: 0;
 }
 
-#confirm-clear {
+#confirm-ok {
   background: #c62828;
   border-color: #c62828;
   color: #fff;
@@ -267,4 +268,106 @@ button.secondary {
   background: transparent;
   color: var(--pico-primary);
   border-color: var(--pico-primary);
+}
+
+/* ---------- Saved sessions ---------- */
+
+.session-actions {
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.session-actions button {
+  width: auto;
+  margin: 0;
+}
+
+#save-status,
+#saved-note {
+  color: var(--pico-muted-color);
+}
+
+.saved-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.saved-card h3 {
+  margin-bottom: 0.25rem;
+}
+
+.saved-card p {
+  margin: 0;
+  color: var(--pico-muted-color);
+}
+
+.saved-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.saved-buttons button {
+  width: auto;
+  margin: 0;
+}
+
+.open-tag {
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  vertical-align: middle;
+  background: var(--pico-primary-background);
+  color: var(--pico-primary-inverse);
+}
+
+/* ---------- Account ---------- */
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+#account-area {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+#account-area button {
+  width: auto;
+  margin: 0;
+}
+
+.account-email {
+  color: var(--pico-muted-color);
+}
+
+#account-dialog article {
+  width: 100%;
+  max-width: 28rem;
+  margin: 0;
+  padding: 1.5rem;
+}
+
+#account-message.error {
+  color: #c62828;
+}
+
+.account-switch {
+  margin: 1rem 0 0;
+  text-align: center;
+}
+
+@media print {
+  #account-area {
+    display: none !important;
+  }
 }

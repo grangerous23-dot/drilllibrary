@@ -11,10 +11,14 @@
 
 <body>
   <header>
-  <h1>Drill Library</h1>
+  <div class="header-top">
+    <h1>Drill Library</h1>
+    <div id="account-area"></div>
+  </div>
   <nav>
     <button data-tab="drills-view" class="tab-btn active">Drills</button>
     <button data-tab="session-view" class="tab-btn">My Session <span id="session-count"></span></button>
+    <button data-tab="saved-view" class="tab-btn">Saved Sessions</button>
   </nav>
 </header>
 
@@ -47,9 +51,18 @@
     <div id="session-list"></div>
     <p id="session-total"></p>
     <div class="session-actions">
-      <button id="print-session">Print session</button>
-      <button id="clear-session" class="secondary">Clear session</button>
+      <button id="save-session">Save session</button>
+      <button id="print-session" class="secondary">Print session</button>
+      <button id="new-session" class="secondary">New session</button>
+      <span id="save-status"></span>
     </div>
+  </section>
+
+  <section id="saved-view" hidden>
+    <h2>Saved Sessions</h2>
+    <p id="saved-note"></p>
+    <p id="saved-empty">You haven't saved any sessions yet. Build one in My Session and click "Save session".</p>
+    <div id="saved-list"></div>
   </section>
 </main>
 <dialog id="drill-dialog">
@@ -60,15 +73,36 @@
 </dialog>
 <dialog id="confirm-dialog">
   <article>
-    <h3>Clear this session?</h3>
-    <p>This removes every drill from your session. You can't undo this.</p>
+    <h3 id="confirm-title"></h3>
+    <p id="confirm-message"></p>
     <div class="confirm-buttons">
       <button id="confirm-cancel" class="secondary">Cancel</button>
-      <button id="confirm-clear">Clear session</button>
+      <button id="confirm-ok"></button>
     </div>
   </article>
 </dialog>
+<dialog id="account-dialog">
+  <article>
+    <h3 id="account-title">Log in</h3>
+    <form id="account-form">
+      <label>Email <input type="email" id="account-email" required autocomplete="email"></label>
+      <label>Password <input type="password" id="account-password" required minlength="6" autocomplete="current-password"></label>
+      <p id="account-message" hidden></p>
+      <div class="confirm-buttons">
+        <button type="button" id="account-cancel" class="secondary">Cancel</button>
+        <button type="submit" id="account-submit">Log in</button>
+      </div>
+    </form>
+    <p class="account-switch">
+      <span id="account-switch-text">Don't have an account?</span>
+      <a href="#" id="account-switch">Sign up</a>
+    </p>
+  </article>
+</dialog>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
     <script src="drill.js"></script>
+    <script src="sessions.js"></script>
 </body>
 
 </html>
