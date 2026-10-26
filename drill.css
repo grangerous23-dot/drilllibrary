@@ -87,6 +87,23 @@ dialog article {
   gap: 0.5rem;
 }
 
+/* Drills / My Session tabs: each takes half the page width */
+header nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+header nav .tab-btn {
+  width: 100%;
+}
+
+/* Space between the All / Individual / Group buttons and the drill cards */
+#drills-view nav {
+  margin-bottom: 1.5rem;
+}
+
 @media (max-width: 768px) {
   .filters {
     grid-template-columns: 1fr;
