@@ -87,6 +87,11 @@ dialog article {
   gap: 0.5rem;
 }
 
+/* Space between the All / Individual / Group buttons and the drill cards */
+#drills-view nav {
+  margin-bottom: 1.5rem;
+}
+
 @media (max-width: 768px) {
   .filters {
     grid-template-columns: 1fr;
