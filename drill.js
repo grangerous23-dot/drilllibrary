@@ -166,12 +166,12 @@ function applyFilters() {
 
   const filtered = drills.filter(function (drill) {
     if (filters.category !== "all" && drill.category !== filters.category) return false;
-    if (filters.difficulty === "warmup" || filters.difficulty === "cooldown") {
-      if (drill.phase !== filters.difficulty) return false;
-    } else if (filters.difficulty !== "all" && drill.difficulty !== filters.difficulty) {
+    if (filters.difficulty !== "all" && drill.difficulty !== filters.difficulty) return false;
+    if (filters.skill === "warmup" || filters.skill === "cooldown") {
+      if (drill.phase !== filters.skill) return false;
+    } else if (filters.skill !== "all" && !drillSkills(drill).includes(filters.skill)) {
       return false;
     }
-    if (filters.skill !== "all" && !drillSkills(drill).includes(filters.skill)) return false;
     if (search) {
       const text = (drill.name + " " + drill.description + " " + drill.skill).toLowerCase();
       if (!text.includes(search)) return false;
@@ -190,9 +190,14 @@ drills.forEach(function (drill) {
   });
 });
 allSkills.sort();
-document.getElementById("skill-filter").innerHTML += allSkills.map(function (skill) {
-  return `<option value="${skill}">${skill}</option>`;
-}).join("");
+document.getElementById("skill-filter").innerHTML +=
+  allSkills.map(function (skill) {
+    return `<option value="${skill}">${skill}</option>`;
+  }).join("") +
+  `<optgroup label="Session part">
+    <option value="warmup">Warm-up</option>
+    <option value="cooldown">Cool-down</option>
+  </optgroup>`;
 
 document.getElementById("search").addEventListener("input", function (event) {
   filters.search = event.target.value;
