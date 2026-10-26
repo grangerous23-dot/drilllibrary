@@ -5,7 +5,7 @@ const drills = [
     name: "Cone Weave Dribbling",
     category: "individual",
     skill: "Dribbling",
-    difficulty: "beginner",
+    difficulty: "Beginner",
     equipment: "cones",
     description: "Dribble through a line of cones using both feet.",
     gif: "images/cone-weave.gif",
@@ -15,7 +15,7 @@ const drills = [
     name: "Wall Passing",
     category: "individual",
     skill: "Passing",
-    difficulty: "beginner",
+    difficulty: "Beginner",
     equipment: "ball, wall",
     description: "Improve passing accuracy, high repetitions.",
     gif: "images/wall-passing.gif",
@@ -25,7 +25,7 @@ const drills = [
     name: "First Touch Game",
     category: "individual",
     skill: "Ball Control",
-    difficulty: "beginner",
+    difficulty: "Beginner",
     equipment: "ball",
     description: "Launch ball into air, control with foot.",
     gif: "images/first-touch-game.gif"
@@ -36,7 +36,7 @@ const drills = [
     category: "group",
     playerCount: 2,
     skill: "Dribbling, Defending, Finishing",
-    difficulty: "intermediate",
+    difficulty: "Intermediate",
     equipment: "ball, goal",
     description: "Practice attacking and defending in a 1v1 scenario.",
     gif: "images/1v1-attack-defend.gif"
@@ -47,7 +47,7 @@ const drills = [
     category: "group",
     playerCount: 7,
     skill: "Passing, Ball Control",
-    difficulty: "intermediate",
+    difficulty: "Intermediate",
     equipment: "ball",
     description: "Keep possession in a small area while defenders try to intercept.",
     gif: "images/rondos.gif",
@@ -58,7 +58,7 @@ const drills = [
     category: "group",
     playerCount: 4,
     skill: "Dribbling, Passing, Finishing",
-    difficulty: "intermediate",
+    difficulty: "Intermediate",
     equipment: "ball, goal",
     description: "A 2v2 game focusing on dribbling and passing.",
     gif: "images/2v2.gif",
@@ -69,7 +69,7 @@ const drills = [
     category: "group",
     phase: "warmup",
     skill: "Fitness",
-    difficulty: "beginner",
+    difficulty: "Beginner",
     equipment: "cones",
     description: "Jog between two lines of cones doing high knees, butt kicks, side shuffles and leg swings."
   },
@@ -80,7 +80,7 @@ const drills = [
     phase: "warmup",
     playerCount: 2,
     skill: "Passing",
-    difficulty: "beginner",
+    difficulty: "Beginner",
     equipment: "ball",
     description: "Partners pass back and forth at walking pace, then jogging, using both feet."
   },
@@ -90,7 +90,7 @@ const drills = [
     category: "group",
     phase: "cooldown",
     skill: "Fitness",
-    difficulty: "beginner",
+    difficulty: "Beginner",
     equipment: "none",
     description: "Two slow laps of the field, then hold each stretch (quads, hamstrings, calves, hips) for 20-30 seconds."
   },
@@ -100,7 +100,7 @@ const drills = [
     category: "individual",
     phase: "cooldown",
     skill: "Ball Control",
-    difficulty: "beginner",
+    difficulty: "Beginner",
     equipment: "ball",
     description: "Relaxed juggling at your own pace to bring the heart rate down while keeping a touch on the ball."
   },
@@ -109,7 +109,7 @@ const drills = [
     name: "Finishing Circuit",
     category: "individual",
     skill: "Finishing",
-    difficulty: "intermediate",
+    difficulty: "Intermediate",
     equipment: "balls, cones, goal",
     description: "Dribble around a cone and shoot from the edge of the box. Alternate feet and aim for the corners."
   }
