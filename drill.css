@@ -83,3 +83,8 @@ dialog article {
     flex-direction: column;
   }
 }
+.minutes-input {
+  width: 5rem;
+  display: inline-block;
+  margin: 0 0.5rem;
+}

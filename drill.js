@@ -140,10 +140,10 @@ if (grid) {
     }
       document.getElementById("add-to-session").addEventListener("click", function() {
             console.log("button clicked");
-    session.push({ id: drill.id, minutes: 10 });
+    session.push({ id: drill.id, type: "time", minutes: 10, reps: 10, sets: 3, work: 60, rest: 30 });
+  });
     console.log(session);
         renderSession();
-  });
   });
 }
 
@@ -156,18 +156,51 @@ if (closeDialogButton) {
     }
   });
 }
-function renderSession() {
-    console.log("renderSession running", session);
-  const list = document.getElementById("session-list");
+function sessionFields(item, index) {
+  if (item.type === "timeReps") {
+    return `
+      <label>Minutes <input type="number" class="session-input" data-index="${index}" data-field="minutes" value="${item.minutes}" min="1"></label>
+      <label>Reps <input type="number" class="session-input" data-index="${index}" data-field="reps" value="${item.reps}" min="1"></label>
+    `;
+  }
 
-  const itemsHTML = session.map(function(item) {
+  if (item.type === "sets") {
+    return `
+      <label>Sets <input type="number" class="session-input" data-index="${index}" data-field="sets" value="${item.sets}" min="1"></label>
+      <label>Work (sec) <input type="number" class="session-input" data-index="${index}" data-field="work" value="${item.work}" min="1"></label>
+      <label>Rest (sec) <input type="number" class="session-input" data-index="${index}" data-field="rest" value="${item.rest}" min="0"></label>
+    `;
+  }
+
+  return `
+    <label>Minutes <input type="number" class="session-input" data-index="${index}" data-field="minutes" value="${item.minutes}" min="1"></label>
+  `;
+}
+
+function renderSession() {
+  const itemsHTML = session.map(function(item, index) {
     const drill = drills.find(function(d) {
       return d.id === item.id;
     });
-    return `<li>${drill.name} – ${item.minutes} min</li>`;
+    return `
+      <li>
+        ${drill.name}
+        <input type="number" class="minutes-input" data-index="${index}" value="${item.minutes}" min="1"> min
+      </li>
+    `;
+  });
+  const list = document.getElementById("session-list");
+  list.innerHTML = itemsHTML.join("");
+  renderTotal();
+}
+function renderTotal() {
+      let total = 0;
+
+  session.forEach(function(item) {
+    total = total + item.minutes;
   });
 
-  list.innerHTML = itemsHTML.join("");
+  document.getElementById("session-total").textContent = "Total: " + total + " min";
 }
 const tabs = document.querySelectorAll(".tab-btn");
 
@@ -181,4 +214,12 @@ tabs.forEach(function(tab) {
     document.getElementById("drills-view").hidden = tab.dataset.tab !== "drills-view";
     document.getElementById("session-view").hidden = tab.dataset.tab !== "session-view";
   });
+});
+document.getElementById("session-list").addEventListener("input", function(event) {
+  if (!event.target.classList.contains("minutes-input")) return;
+
+  const index = Number(event.target.dataset.index);
+  session[index].minutes = Number(event.target.value);
+
+  renderTotal();
 });
