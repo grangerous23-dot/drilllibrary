@@ -588,7 +588,7 @@ button.secondary {
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   transition: background-color 0.4s;
-  min-height: 320px;
+  min-height: 600px;
   display: flex;
   align-items: center;
   justify-content: center;
