@@ -277,6 +277,7 @@ buildSkillOptions();
 document.getElementById("search").addEventListener("input", function (event) {
   filters.search = event.target.value;
   applyFilters();
+    applySkillTheme(filters.skill);
 });
 
 document.getElementById("skill-filter").addEventListener("change", function (event) {
