@@ -123,7 +123,35 @@ const sessionParts = [
 ];
 
 // ---------- Drill library ----------
+// A color, quote and (optional) image for each skill.
+// The banner changes to match whichever skill is picked in the dropdown.
+const skillThemes = {
+  all: { color: "#0172ad", quote: "Every great player is built one drill at a time." },
+  "Finishing": { color: "#c62828", quote: "Pick your corner before the ball arrives." },
+  "Passing": { color: "#2e7d32", quote: "The ball moves faster than any player." },
+  "Dribbling": { color: "#6a1b9a", quote: "Keep it close. Keep your head up." },
+  "Defending": { color: "#37474f", quote: "Stay on your feet. Make them decide." },
+  "Ball Control": { color: "#ef6c00", quote: "Your first touch sets up everything after it." },
+  "Fitness": { color: "#00838f", quote: "Fit players still think clearly in the last ten minutes." },
+  warmup: { color: "#f9a825", quote: "Get loose. Get touches. Get ready." },
+  cooldown: { color: "#5c6bc0", quote: "Recover today so you can train tomorrow." }
+};
 
+function applySkillTheme(skill) {
+  // Skills without a theme (like ones coaches add) use the "all" theme
+  const theme = skillThemes[skill] || skillThemes.all;
+  const banner = document.getElementById("skill-banner");
+
+  document.documentElement.style.setProperty("--theme-color", theme.color);
+  document.getElementById("skill-quote").textContent = theme.quote;
+
+  // The dark layer on top of the image keeps the white text readable
+  banner.style.backgroundImage = theme.image
+    ? `linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url("${theme.image}")`
+    : "";
+}
+
+applySkillTheme("all");
 // Anything coaches type (drill names, descriptions, session names) must be escaped
 // before it goes into innerHTML, or someone could sneak code into the page
 function escapeHTML(text) {
