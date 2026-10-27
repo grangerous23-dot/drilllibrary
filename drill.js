@@ -133,8 +133,8 @@ const skillThemes = {
   "Defending": { color: "#37474f", quote: "Put another way, defending is our first offensive action. - Jurgen Klopp", tint: "rgba(84, 81, 87,0.25)", image: "https://i.pinimg.com/736x/24/7d/94/247d9491b95ef09c7bb2160a7b0dba16.jpg"  },
   "Ball Control": { color: "#ef6c00", quote: "The basics for me is the first touch... First touch in football is so important... With that you create your own time. - Dimitar Berbatov", tint: "rgba(209, 129, 17,0.25)", image: "https://i.pinimg.com/736x/98/57/4f/98574fa7732ca1b568c670941d8cfb9a.jpg" },
   "Fitness": { color: "#00838f", quote: "If you are not prepared to run, you should not play the game. - Roy Keane", tint: "rgba(30, 209, 17,0.25)", image:"https://i.pinimg.com/1200x/92/fe/17/92fe177011e270bd9c0595ce72f82021.jpg" },
-  warmup: { color: "#f9a825", quote: "“I start early and I stay late, day after day, year after year. - Lionel Messi", tint: "rgba(9, 11, 173,0.25)", image:"https://i.pinimg.com/1200x/b2/66/31/b266314115b51326eb3a0e4a90cee7e6.jpg" },
-  cooldown: { color: "#5c6bc0", quote: "For me, recovery is as important as training. - Cristiano Ronaldo", rgba(8, 116, 204,0.25), image:"https://i.pinimg.com/1200x/b8/00/41/b8004132d0cd253c11f68a145617a4de.jpg" }
+  warmup: { color: "#f9a825", quote: "I start early and I stay late, day after day, year after year. - Lionel Messi", tint: "rgba(9, 11, 173,0.25)", image:"https://i.pinimg.com/1200x/b2/66/31/b266314115b51326eb3a0e4a90cee7e6.jpg" },
+  cooldown: { color: "#5c6bc0", quote: "For me, recovery is as important as training. - Cristiano Ronaldo", tint: "rgba(8, 116, 204, 0.25)", image: "https://i.pinimg.com/1200x/b8/00/41/b8004132d0cd253c11f68a145617a4de.jpg" }
 };
 
 let activeLayer = 0; // which of the two image layers is showing
