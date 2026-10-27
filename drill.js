@@ -127,8 +127,8 @@ const sessionParts = [
 // The banner changes to match whichever skill is picked in the dropdown.
 const skillThemes = {
   all: { color: "#0172ad", quote: "Playing football is very simple, but playing simple football is the hardest thing there is. - Johan Cruyff", tint: "rgba(14, 37, 237, 0.45)", image: "https://i.pinimg.com/1200x/03/e3/8e/03e38ec1c60e677cc2a871a1a35dfa7d.jpg" },
-  "Finishing": { color: "#c62828", quote: "Even if I miss one time, I will shoot the second time. If I lose the second time, I will shoot the third time. I'm not afraid. - Cristiano Ronaldo", tint "rgba(194, 6, 6,0.45)", image:"https://i.pinimg.com/736x/4d/66/72/4d66726ab5167c4ee7f4ba8d7f03396e.jpg" },
-  "Passing": { color: "#2e7d32", quote: "The game is played with your head. Your legs are just the tools. - Andrea Pirlo", tint: "6, 194, 188,0.45",image: "https://i.pinimg.com/736x/04/50/49/04504931139240fb707f41f909e6c0c7.jpg" },
+  "Finishing": { color: "#c62828", quote: "Even if I miss one time, I will shoot the second time. If I lose the second time, I will shoot the third time. I'm not afraid. - Cristiano Ronaldo", tint: "rgba(194, 6, 6, 0.45)", image: "https://i.pinimg.com/736x/4d/66/72/4d66726ab5167c4ee7f4ba8d7f03396e.jpg" },
+  "Passing": { color: "#2e7d32", quote: "The game is played with your head. Your legs are just the tools. - Andrea Pirlo", tint: "rgba(6, 194, 188, 0.45)", image: "https://i.pinimg.com/736x/04/50/49/04504931139240fb707f41f909e6c0c7.jpg" },
   "Dribbling": { color: "#6a1b9a", quote: "Keep it close. Keep your head up." },
   "Defending": { color: "#37474f", quote: "Stay on your feet. Make them decide." },
   "Ball Control": { color: "#ef6c00", quote: "Your first touch sets up everything after it." },
