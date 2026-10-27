@@ -124,6 +124,22 @@ const sessionParts = [
 
 // ---------- Drill library ----------
 
+// Anything coaches type (drill names, descriptions, session names) must be escaped
+// before it goes into innerHTML, or someone could sneak code into the page
+function escapeHTML(text) {
+  return String(text === undefined || text === null ? "" : text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+// True if the logged-in coach uploaded this drill (currentUser lives in sessions.js)
+function isMyDrill(drill) {
+  return typeof currentUser !== "undefined" && currentUser !== null && drill.userId === currentUser.id;
+}
+
 const filters = {
   category: "all",
   search: "",
@@ -132,7 +148,7 @@ const filters = {
 };
 
 function drillSkills(drill) {
-  return drill.skill.split(",").map(function (s) {
+  return (drill.skill || "").split(",").map(function (s) {
     return s.trim();
   });
 }
@@ -143,9 +159,10 @@ function partLabel(value) {
   }).label;
 }
 
+// Built-in drills have number ids, uploaded drills have text ids, so compare them as text
 function findDrill(id) {
   return drills.find(function (d) {
-    return d.id === id;
+    return String(d.id) === String(id);
   });
 }
 
@@ -155,13 +172,18 @@ function renderDrills(drillList) {
 
   const cardsHTML = drillList.map(function (drill) {
     return `
-      <div data-id="${drill.id}" class="drill-card" tabindex="0" role="button">
-        ${drill.phase ? `<span class="phase-tag">${partLabel(drill.phase)}</span>` : ""}
-        <h3>${drill.name}</h3>
-        <p>Skill: ${drill.skill}</p>
-        <p>Difficulty: ${drill.difficulty}</p>
-        ${drill.playerCount ? `<p>Players: ${drill.playerCount}</p>` : ""}
-        <button class="card-add-btn" data-id="${drill.id}">+ Add to session</button>
+      <div data-id="${escapeHTML(drill.id)}" class="drill-card" tabindex="0" role="button">
+        <div class="card-tags">
+          ${drill.phase ? `<span class="phase-tag">${partLabel(drill.phase)}</span>` : ""}
+          ${drill.animation ? `<span class="phase-tag tag-light">▶ Animated</span>` : ""}
+          ${drill.mediaType === "video" ? `<span class="phase-tag tag-light">Video</span>` : ""}
+          ${isMyDrill(drill) ? `<span class="phase-tag tag-mine">Your drill</span>` : ""}
+        </div>
+        <h3>${escapeHTML(drill.name)}</h3>
+        <p>Skill: ${escapeHTML(drill.skill)}</p>
+        <p>Difficulty: ${escapeHTML(drill.difficulty)}</p>
+        ${drill.playerCount ? `<p>Players: ${escapeHTML(drill.playerCount)}</p>` : ""}
+        <button class="card-add-btn" data-id="${escapeHTML(drill.id)}">+ Add to session</button>
       </div>
     `;
   });
@@ -191,22 +213,38 @@ function applyFilters() {
   renderDrills(filtered);
 }
 
-// Fill the skill dropdown from the skills used in the drills
-const allSkills = [];
-drills.forEach(function (drill) {
-  drillSkills(drill).forEach(function (skill) {
-    if (!allSkills.includes(skill)) allSkills.push(skill);
+// Every skill used by any drill, A-Z
+function allSkills() {
+  const skills = [];
+  drills.forEach(function (drill) {
+    drillSkills(drill).forEach(function (skill) {
+      if (skill && !skills.includes(skill)) skills.push(skill);
+    });
   });
-});
-allSkills.sort();
-document.getElementById("skill-filter").innerHTML +=
-  allSkills.map(function (skill) {
-    return `<option value="${skill}">${skill}</option>`;
-  }).join("") +
-  `<optgroup label="Session part">
-    <option value="warmup">Warm-up</option>
-    <option value="cooldown">Cool-down</option>
-  </optgroup>`;
+  return skills.sort();
+}
+
+// Fill the skill dropdown from the skills used in the drills.
+// Runs again when uploaded drills load, since they can add new skills.
+function buildSkillOptions() {
+  const select = document.getElementById("skill-filter");
+  select.innerHTML =
+    `<option value="all">All skills</option>` +
+    allSkills().map(function (skill) {
+      return `<option value="${escapeHTML(skill)}">${escapeHTML(skill)}</option>`;
+    }).join("") +
+    `<optgroup label="Session part">
+      <option value="warmup">Warm-up</option>
+      <option value="cooldown">Cool-down</option>
+    </optgroup>`;
+  select.value = filters.skill;
+  if (select.value !== filters.skill) {
+    // The chosen skill no longer exists
+    filters.skill = "all";
+    select.value = "all";
+  }
+}
+buildSkillOptions();
 
 document.getElementById("search").addEventListener("input", function (event) {
   filters.search = event.target.value;
@@ -247,29 +285,72 @@ function showAdded(button) {
   }, 1200);
 }
 
+let currentPlayer = null; // the animation playing in the popup, so it can be stopped
+
+// Only show media from https links (blocks tricks like "javascript:" links)
+function safeMediaUrl(url) {
+  return typeof url === "string" && url.startsWith("https://") ? url : null;
+}
+
+function mediaHTML(drill) {
+  const url = safeMediaUrl(drill.mediaUrl) || drill.gif;
+  if (!url) return "";
+  if (drill.mediaType === "video") {
+    return `<video src="${escapeHTML(url)}" controls muted loop playsinline></video>`;
+  }
+  return `<img src="${escapeHTML(url)}" alt="${escapeHTML(drill.name)} diagram">`;
+}
+
 function openDrill(drill) {
   const detail = document.getElementById("drill-detail");
   if (!detail) return;
+  stopPlayer();
+
+  const hasVisuals = drill.animation || drill.mediaUrl || drill.gif;
 
   detail.innerHTML = `
-    <h2>${drill.name}</h2>
+    <h2>${escapeHTML(drill.name)}</h2>
     <div class="detail-layout">
       <div class="detail-text">
-        <p>Skill: ${drill.skill}</p>
-        <p>Difficulty: ${drill.difficulty}</p>
-        ${drill.playerCount ? `<p>Players: ${drill.playerCount}</p>` : ""}
-        <p>Equipment: ${drill.equipment || "N/A"}</p>
-        <p>${drill.description}</p>
+        <p>Skill: ${escapeHTML(drill.skill)}</p>
+        <p>Difficulty: ${escapeHTML(drill.difficulty)}</p>
+        ${drill.playerCount ? `<p>Players: ${escapeHTML(drill.playerCount)}</p>` : ""}
+        <p>Equipment: ${escapeHTML(drill.equipment || "N/A")}</p>
+        <p class="drill-description">${escapeHTML(drill.description)}</p>
         <button id="add-to-session">Add to session</button>
+        ${isMyDrill(drill) ? `
+          <div class="owner-buttons">
+            <button id="edit-drill" class="secondary">Edit drill</button>
+            <button id="delete-drill" class="secondary">Delete drill</button>
+          </div>` : ""}
       </div>
-      ${drill.gif ? `<div class="detail-diagram"><img src="${drill.gif}" alt="${drill.name} diagram"></div>` : ""}
+      ${hasVisuals ? `
+        <div class="detail-diagram">
+          ${drill.animation ? `<div id="drill-animation"></div>` : ""}
+          ${mediaHTML(drill)}
+        </div>` : ""}
     </div>
   `;
+
+  if (drill.animation && typeof createAnimationPlayer === "function" && isValidAnimation(drill.animation)) {
+    currentPlayer = createAnimationPlayer(document.getElementById("drill-animation"), drill.animation);
+  }
 
   document.getElementById("add-to-session").addEventListener("click", function (event) {
     addToSession(drill.id);
     showAdded(event.target);
   });
+
+  // editDrill and deleteDrill are in upload.js
+  if (isMyDrill(drill)) {
+    document.getElementById("edit-drill").addEventListener("click", function () {
+      closeDrillDialog();
+      editDrill(drill);
+    });
+    document.getElementById("delete-drill").addEventListener("click", function () {
+      deleteDrill(drill);
+    });
+  }
 
   const dialog = document.getElementById("drill-dialog");
   if (dialog && typeof dialog.showModal === "function") {
@@ -277,13 +358,30 @@ function openDrill(drill) {
   }
 }
 
+function stopPlayer() {
+  if (currentPlayer) currentPlayer.stop();
+  currentPlayer = null;
+}
+
+function closeDrillDialog() {
+  const dialog = document.getElementById("drill-dialog");
+  if (dialog.open) dialog.close();
+}
+
+// Stop the animation and any video when the popup closes (Close button or Esc)
+document.getElementById("drill-dialog").addEventListener("close", function () {
+  stopPlayer();
+  const video = document.querySelector("#drill-detail video");
+  if (video) video.pause();
+});
+
 const grid = document.getElementById("drill-grid");
 if (grid) {
   grid.addEventListener("click", function (event) {
     // "+ Add to session" button on a card: add without opening the popup
     const addButton = event.target.closest(".card-add-btn");
     if (addButton) {
-      addToSession(Number(addButton.dataset.id));
+      addToSession(addButton.dataset.id);
       showAdded(addButton);
       return;
     }
@@ -291,7 +389,7 @@ if (grid) {
     const card = event.target.closest(".drill-card");
     if (!card) return;
 
-    const drill = findDrill(Number(card.dataset.id));
+    const drill = findDrill(card.dataset.id);
     if (drill) openDrill(drill);
   });
 
@@ -301,19 +399,14 @@ if (grid) {
     if (!event.target.classList.contains("drill-card")) return;
     event.preventDefault();
 
-    const drill = findDrill(Number(event.target.dataset.id));
+    const drill = findDrill(event.target.dataset.id);
     if (drill) openDrill(drill);
   });
 }
 
 const closeDialogButton = document.getElementById("close-dialog");
 if (closeDialogButton) {
-  closeDialogButton.addEventListener("click", function () {
-    const dialog = document.getElementById("drill-dialog");
-    if (dialog && typeof dialog.close === "function") {
-      dialog.close();
-    }
-  });
+  closeDialogButton.addEventListener("click", closeDrillDialog);
 }
 
 // ---------- Session planner ----------
@@ -324,8 +417,9 @@ let currentSessionId = null;
 
 function addToSession(drillId) {
   const drill = findDrill(drillId);
+  if (!drill) return;
   const part = drill.phase || "main";
-  session.push({ id: drillId, part: part, type: "time", minutes: 10, reps: 10, sets: 3, work: 60, rest: 30 });
+  session.push({ id: drill.id, part: part, type: "time", minutes: 10, reps: 10, sets: 3, work: 60, rest: 30 });
   renderSession();
 }
 
@@ -364,14 +458,15 @@ function sessionFields(item, index) {
 }
 
 function renderItem(item, index) {
-  const drill = findDrill(item.id);
+  // Uploaded drills load a moment after the page, and a coach may delete one
+  const drill = findDrill(item.id) || { name: "Drill not available" };
   const isFirst = previousInPart(index) === -1;
   const isLast = nextInPart(index) === -1;
 
   return `
     <li class="session-item">
       <div class="session-item-head">
-        <strong>${drill.name}</strong>
+        <strong>${escapeHTML(drill.name)}</strong>
         <span class="item-minutes">${formatMinutes(itemMinutes(item))} min</span>
         <span class="item-buttons">
           <button data-action="up" data-index="${index}" aria-label="Move up" ${isFirst ? "disabled" : ""}>↑</button>
@@ -565,10 +660,8 @@ function loadSession() {
     if (!saved) return;
     sessionName = saved.name || "";
     currentSessionId = saved.savedId || null;
-    // Skip any drills that no longer exist in the library
-    session = (saved.items || []).filter(function (item) {
-      return findDrill(item.id);
-    });
+    // Keep every drill, even ones not found yet: uploaded drills load a moment later
+    session = saved.items || [];
     session.forEach(function (item) {
       if (!item.part) item.part = "main";
     });

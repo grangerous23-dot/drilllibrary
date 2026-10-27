@@ -15,13 +15,6 @@ if (typeof SUPABASE_URL !== "undefined" && SUPABASE_URL && SUPABASE_KEY && windo
   supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 }
 
-// Session names are typed by coaches, so escape them before putting them in HTML
-function escapeHTML(text) {
-  const div = document.createElement("div");
-  div.textContent = text;
-  return div.innerHTML;
-}
-
 function findSaved(id) {
   return savedSessions.find(function (saved) {
     return saved.id === id;

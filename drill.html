@@ -24,6 +24,9 @@
 
 <main>
   <section id="drills-view">
+    <div class="drills-top" id="add-drill-row" hidden>
+      <button id="add-drill-button">+ Add a drill</button>
+    </div>
     <div class="filters">
       <input type="search" id="search" placeholder="Search drills..." aria-label="Search drills">
       <select id="skill-filter" aria-label="Skill">
@@ -65,7 +68,7 @@
     <div id="saved-list"></div>
   </section>
 </main>
-<dialog id="drill-dialog">
+<dialog id="drill-dialog" class="fullscreen-dialog">
   <article>
     <div id="drill-detail"></div>
     <button id="close-dialog">Close</button>
@@ -79,6 +82,79 @@
       <button id="confirm-cancel" class="secondary">Cancel</button>
       <button id="confirm-ok"></button>
     </div>
+  </article>
+</dialog>
+<dialog id="upload-dialog" class="fullscreen-dialog">
+  <article>
+    <h2 id="upload-title">Add a drill</h2>
+    <form id="drill-form" novalidate>
+      <label>Drill name
+        <input type="text" id="f-name" maxlength="100" required>
+      </label>
+      <label>Description
+        <textarea id="f-description" rows="5" maxlength="3000" required
+          placeholder="How the drill works, coaching points, ways to make it easier or harder..."></textarea>
+      </label>
+      <div class="form-row">
+        <label>Type
+          <select id="f-category">
+            <option value="group">Group</option>
+            <option value="individual">Individual</option>
+          </select>
+        </label>
+        <label>Difficulty
+          <select id="f-difficulty">
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+        </label>
+        <label>Players
+          <input type="number" id="f-players" min="1" max="50" placeholder="Optional">
+        </label>
+        <label>Session part
+          <select id="f-phase">
+            <option value="">Main session</option>
+            <option value="warmup">Warm-up</option>
+            <option value="cooldown">Cool-down</option>
+          </select>
+        </label>
+      </div>
+      <fieldset>
+        <legend>Skills (pick at least one)</legend>
+        <div id="f-skills" class="skill-checkboxes"></div>
+        <label>Other skills
+          <input type="text" id="f-other-skills" maxlength="100" placeholder="e.g. Heading, Goalkeeping (separate with commas)">
+        </label>
+      </fieldset>
+      <label>Equipment
+        <input type="text" id="f-equipment" maxlength="200" placeholder="e.g. Balls, cones, 2 mini goals">
+      </label>
+
+      <h3>Show how it works</h3>
+      <p class="form-help">Add a photo, GIF or video, build an animation, or both.</p>
+
+      <fieldset class="form-box">
+        <legend>Photo, GIF or video</legend>
+        <div id="f-media-preview"></div>
+        <input type="file" id="f-media" accept="image/png,image/jpeg,image/gif,image/webp,video/mp4,video/webm,video/quicktime">
+        <button type="button" id="f-media-remove" class="secondary" hidden>Remove</button>
+        <small>Images or videos up to 20 MB.</small>
+      </fieldset>
+
+      <fieldset class="form-box">
+        <legend>Animation</legend>
+        <button type="button" id="f-animation-start" class="secondary">+ Create an animation</button>
+        <div id="f-animator"></div>
+        <button type="button" id="f-animation-remove" class="secondary" hidden>Remove animation</button>
+      </fieldset>
+
+      <p id="upload-message" hidden></p>
+      <div class="confirm-buttons">
+        <button type="button" id="upload-cancel" class="secondary">Cancel</button>
+        <button type="submit" id="upload-submit">Publish drill</button>
+      </div>
+    </form>
   </article>
 </dialog>
 <dialog id="account-dialog">
@@ -101,8 +177,10 @@
 </dialog>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="config.js"></script>
+    <script src="animator.js"></script>
     <script src="drill.js"></script>
     <script src="sessions.js"></script>
+    <script src="upload.js"></script>
 </body>
 
 </html>

@@ -9,11 +9,14 @@ Until you do this, the site still works. Saved sessions are just kept in the bro
 2. Click **New project**. Give it a name (e.g. `drill-library`), set a database password (save it somewhere), pick the region closest to you, and click **Create**.
 3. Wait a minute or two while it sets up.
 
-## 2. Create the sessions table
+## 2. Create the tables
 
 1. In the left sidebar, open **SQL Editor**.
 2. Click **New query**, paste everything from [`supabase-setup.sql`](supabase-setup.sql), and click **Run**.
 3. You should see "Success. No rows returned".
+
+Then do the same with [`supabase-drills.sql`](supabase-drills.sql). It creates the `drills` table for drills coaches upload,
+and a `drill-media` storage bucket for their photos and videos.
 
 ## 3. Connect the site
 
