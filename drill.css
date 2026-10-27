@@ -46,36 +46,6 @@ dialog {
   overflow-y: auto;
 }
 
-#close-dialog {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-    padding: 0.25rem 0.75rem;
-  font-size: 0.9rem;
-  width: auto;
-
-}
-.detail-layout {
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
-}
-
-.detail-text,
-.detail-diagram {
-  flex: 1;
-}
-
-.detail-diagram img {
-  width: 100%;
-  border-radius: 8px;
-}
-
-@media (max-width: 768px) {
-  .detail-layout {
-    flex-direction: column;
-  }
-}
 [hidden] {
   display: none !important;
 }
@@ -410,30 +380,6 @@ button.secondary {
   color: #fff;
 }
 
-.drill-description {
-  white-space: pre-line; /* keep the line breaks coaches typed */
-}
-
-.owner-buttons {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.owner-buttons button {
-  width: auto;
-  margin: 0;
-}
-
-.detail-diagram video {
-  width: 100%;
-  border-radius: 8px;
-}
-
-.detail-diagram > * + * {
-  margin-top: 1rem;
-}
-
 /* Add / edit drill form */
 #upload-dialog article {
   padding-bottom: 2rem;
@@ -622,4 +568,342 @@ button.secondary {
 }
 body {
   overflow-x: clip;
+}
+
+/* ---------- Drill page (the popup when you open a drill) ---------- */
+
+#drill-dialog article {
+  padding: 0;
+  background: var(--pico-background-color, #fff);
+}
+
+#close-dialog {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  line-height: 1;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  backdrop-filter: blur(4px);
+}
+
+#close-dialog:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* Big header with the skill's image and color */
+.drill-hero {
+  background-size: cover;
+  background-position: center;
+  background-image: linear-gradient(120deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55));
+  color: #fff;
+  min-height: 300px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.drill-hero-inner {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 4rem 2rem 2rem;
+}
+
+.drill-hero h2 {
+  color: #fff;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.1;
+  margin: 0.75rem 0;
+}
+
+.drill-hero p,
+.drill-hero .hero-summary {
+  color: #fff;
+}
+
+.hero-summary {
+  font-size: 1.15rem;
+  max-width: 60ch;
+  opacity: 0.92;
+  margin-bottom: 1rem;
+}
+
+.hero-tags,
+.hero-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  backdrop-filter: blur(4px);
+}
+
+.chip-outline {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.chip-mine {
+  background: #2e7d32;
+}
+
+/* Two columns: visuals and instructions on the left, quick facts on the right */
+.drill-body {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.drill-visuals {
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.visual-card {
+  border-radius: 14px;
+  overflow: hidden;
+  background: #111;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.visual-card img,
+.visual-card video {
+  display: block;
+  width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  background: #111;
+}
+
+.visual-card .pitch {
+  border-radius: 0;
+}
+
+.visual-card .animation-controls {
+  padding: 0.6rem 1rem;
+  margin: 0;
+  background: #1b1b1b;
+}
+
+.visual-card .frame-counter {
+  color: #bbb;
+}
+
+.drill-section {
+  margin-bottom: 2rem;
+}
+
+.drill-section h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--theme-color);
+  margin-bottom: 0.75rem;
+}
+
+.drill-section p,
+.drill-section li {
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* Numbered steps with big circled numbers */
+.drill-section ol {
+  list-style: none;
+  counter-reset: step;
+  padding: 0;
+}
+
+.drill-section ol li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 3rem;
+  margin-bottom: 1rem;
+  list-style: none;
+}
+
+.drill-section ol li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--theme-color);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Coaching points as a highlighted box with check marks */
+.coaching-points {
+  background: color-mix(in srgb, var(--theme-color) 8%, transparent);
+  border-left: 4px solid var(--theme-color);
+  border-radius: 0 12px 12px 0;
+  padding: 1.25rem 1.5rem 0.5rem;
+}
+
+.coaching-points ul {
+  padding: 0;
+}
+
+.coaching-points li {
+  list-style: none;
+  position: relative;
+  padding-left: 1.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.coaching-points li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--theme-color);
+  font-weight: 700;
+}
+
+/* Quick facts panel, stays in view while you scroll */
+.drill-side {
+  position: sticky;
+  top: 1.5rem;
+}
+
+.side-card {
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+.side-card h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+}
+
+.fact {
+  background: color-mix(in srgb, var(--theme-color) 7%, transparent);
+  border-radius: 10px;
+  padding: 0.75rem;
+}
+
+.fact dt {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--pico-muted-color);
+  margin: 0;
+}
+
+.fact dd {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0.15rem 0 0;
+}
+
+.equipment {
+  margin-bottom: 1.25rem;
+}
+
+.equipment-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--pico-muted-color);
+}
+
+.equipment p {
+  margin: 0.15rem 0 0;
+}
+
+.equipment p::first-letter {
+  text-transform: uppercase;
+}
+
+.add-big {
+  width: 100%;
+  margin: 0;
+  padding: 0.85rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  background: var(--theme-color);
+  border-color: var(--theme-color);
+  color: #fff;
+}
+
+.owner-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.owner-buttons button {
+  flex: 1;
+  margin: 0;
+}
+
+/* Phones and small tablets: one column, facts first */
+@media (max-width: 900px) {
+  .drill-body {
+    grid-template-columns: 1fr;
+    padding: 1.25rem;
+    gap: 1.5rem;
+  }
+
+  .drill-side {
+    position: static;
+    order: -1;
+  }
+
+  .drill-hero {
+    min-height: 240px;
+  }
+
+  .drill-hero-inner {
+    padding: 4rem 1.25rem 1.5rem;
+  }
+}
+
+/* Short description on drill cards, cut off after 2 lines */
+.card-summary {
+  color: var(--pico-muted-color);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 0.5rem !important;
 }
