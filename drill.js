@@ -126,7 +126,7 @@ const sessionParts = [
 // A color, quote and (optional) image for each skill.
 // The banner changes to match whichever skill is picked in the dropdown.
 const skillThemes = {
-  all: { color: "#0172ad", quote: "Playing football is very simple, but playing simple football is the hardest thing there is. -- Johan Cruyff", tint: rgba("14, 37, 237,0.45"), image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkMEr_N5TdOfP0PYLgra0vI687k3Py21NQFK1-ReLgn03xPzPNRG6GBcXd&s=10" },
+  all: { color: "#0172ad", quote: "Playing football is very simple, but playing simple football is the hardest thing there is. -- Johan Cruyff", tint: "rgba(14, 37, 237, 0.45)", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkMEr_N5TdOfP0PYLgra0vI687k3Py21NQFK1-ReLgn03xPzPNRG6GBcXd&s=10" },
   "Finishing": { color: "#c62828", quote: "Pick your corner before the ball arrives." },
   "Passing": { color: "#2e7d32", quote: "The ball moves faster than any player." },
   "Dribbling": { color: "#6a1b9a", quote: "Keep it close. Keep your head up." },
