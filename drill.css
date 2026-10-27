@@ -594,7 +594,7 @@ button.secondary {
   justify-content: center;
     position: relative;
   overflow: hidden;
-   border: 4px solid #000;
+   border: 10px solid #000;
 }
 /* Two image layers on top of each other. One fades in while the other fades out. */
 .banner-layer {
