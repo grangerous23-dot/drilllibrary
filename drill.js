@@ -126,7 +126,7 @@ const sessionParts = [
 // A color, quote and (optional) image for each skill.
 // The banner changes to match whichever skill is picked in the dropdown.
 const skillThemes = {
-  all: { color: "#0172ad", quote: "Every great player is built one drill at a time." },
+  all: { color: "#0172ad", quote: "Playing football is very simple, but playing simple football is the hardest thing there is.", tint:"14, 37, 237,0.45", image: "https://www.google.com/imgres?q=johan%20cruyff&imgurl=https%3A%2F%2Fworldofjohancruyff.com%2Fwp-content%2Fuploads%2F2025%2F06%2Fjohan-cruyff-19.webp&imgrefurl=https%3A%2F%2Fworldofjohancruyff.com%2Fjohan-cruyff%2F&docid=lxMAa6FuXutp_M&tbnid=ZxdssfHQUqCp1M&vet=12ahUKEwiT-OuIgNuXAxXcm4kEHTXfBcgQnPAOegQIKBAA..i&w=1652&h=994&hcb=2&ved=2ahUKEwiT-OuIgNuXAxXcm4kEHTXfBcgQnPAOegQIKBAA" },
   "Finishing": { color: "#c62828", quote: "Pick your corner before the ball arrives." },
   "Passing": { color: "#2e7d32", quote: "The ball moves faster than any player." },
   "Dribbling": { color: "#6a1b9a", quote: "Keep it close. Keep your head up." },
@@ -147,7 +147,7 @@ function applySkillTheme(skill) {
 
   // The dark layer on top of the image keeps the white text readable
   banner.style.backgroundImage = theme.image
-    ? `linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url("${theme.image}")`
+    ? `linear-gradient(${theme.tint || "rgba(0,0,0,0.45)"}, ${theme.tint || "rgba(0,0,0,0.45)"}), url("${theme.image}")`
     : "";
 }
 
