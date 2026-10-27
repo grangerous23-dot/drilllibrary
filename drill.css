@@ -592,8 +592,27 @@ button.secondary {
   display: flex;
   align-items: center;
   justify-content: center;
+    position: relative;
+  overflow: hidden;
+}
+/* Two image layers on top of each other. One fades in while the other fades out. */
+.banner-layer {
+  position: absolute;
+  inset: 0; /* fill the whole banner */
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.6s;
 }
 
+.banner-layer.visible {
+  opacity: 1;
+}
+
+/* Keep the quote on top of the image layers */
+#skill-quote {
+  position: relative;
+}
 #skill-quote {
   margin: 0;
   font-size: 1.4rem;
