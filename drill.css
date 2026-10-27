@@ -570,3 +570,26 @@ button.secondary {
   font-size: 0.85rem;
   color: var(--pico-muted-color);
 }
+/* ---------- Skill themes ---------- */
+
+:root {
+  --theme-color: #0172ad;
+}
+
+#skill-banner {
+  background-color: var(--theme-color);
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  border-radius: 8px;
+  padding: 2rem 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: background-color 0.4s; /* fades smoothly between colors */
+}
+
+#skill-quote {
+  margin: 0;
+  font-size: 1.4rem;
+  font-style: italic;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
