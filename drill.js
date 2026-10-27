@@ -137,20 +137,25 @@ const skillThemes = {
   cooldown: { color: "#5c6bc0", quote: "For me, recovery is as important as training. - Cristiano Ronaldo", rgba(8, 116, 204,0.25), image:"https://i.pinimg.com/1200x/b8/00/41/b8004132d0cd253c11f68a145617a4de.jpg" }
 };
 
+let activeLayer = 0; // which of the two image layers is showing
+
 function applySkillTheme(skill) {
   // Skills without a theme (like ones coaches add) use the "all" theme
   const theme = skillThemes[skill] || skillThemes.all;
-  const banner = document.getElementById("skill-banner");
+  const layers = document.querySelectorAll("#skill-banner .banner-layer");
 
   document.documentElement.style.setProperty("--theme-color", theme.color);
   document.getElementById("skill-quote").textContent = theme.quote;
 
-  // The dark layer on top of the image keeps the white text readable
-  banner.style.backgroundImage = theme.image
-    ? `linear-gradient(${theme.tint || "rgba(0,0,0,0.45)"}, ${theme.tint || "rgba(0,0,0,0.45)"}), url("${theme.image}")`
+  // Put the new image on the hidden layer, then fade it in while the old one fades out
+  activeLayer = 1 - activeLayer; // switches between 0 and 1
+  const tint = theme.tint || "rgba(0,0,0,0.45)";
+  layers[activeLayer].style.backgroundImage = theme.image
+    ? `linear-gradient(${tint}, ${tint}), url("${theme.image}")`
     : "";
+  layers[activeLayer].classList.add("visible");
+  layers[1 - activeLayer].classList.remove("visible");
 }
-
 applySkillTheme("all");
 // Anything coaches type (drill names, descriptions, session names) must be escaped
 // before it goes into innerHTML, or someone could sneak code into the page
