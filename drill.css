@@ -34,7 +34,7 @@ dialog {
   padding: 0;
 }
 
-#drill-dialog article {
+.fullscreen-dialog article {
   width: 100%;
   max-width: 100%;
   height: 100%;
@@ -370,4 +370,199 @@ button.secondary {
   #account-area {
     display: none !important;
   }
+}
+
+/* ---------- Uploaded drills ---------- */
+
+.drills-top {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.drills-top button {
+  width: auto;
+  margin: 0;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.card-tags:empty {
+  display: none;
+}
+
+.tag-light {
+  background: var(--pico-muted-border-color);
+  color: inherit;
+}
+
+.tag-mine {
+  background: #2e7d32;
+  color: #fff;
+}
+
+.drill-description {
+  white-space: pre-line; /* keep the line breaks coaches typed */
+}
+
+.owner-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.owner-buttons button {
+  width: auto;
+  margin: 0;
+}
+
+.detail-diagram video {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.detail-diagram > * + * {
+  margin-top: 1rem;
+}
+
+/* Add / edit drill form */
+#upload-dialog article {
+  padding-bottom: 2rem;
+}
+
+#drill-form {
+  max-width: 900px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0 1rem;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.skill-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.skill-checkboxes label {
+  margin: 0;
+}
+
+.form-box {
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-help,
+.form-box small {
+  color: var(--pico-muted-color);
+}
+
+#f-media-preview img,
+#f-media-preview video {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.form-box button {
+  width: auto;
+}
+
+#upload-message.error {
+  color: #c62828;
+}
+
+/* ---------- Animator ---------- */
+
+.pitch {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  touch-action: none; /* lets you drag pieces on a phone without scrolling the page */
+  user-select: none;
+}
+
+.animator-pitch .piece {
+  cursor: grab;
+}
+
+.piece.selected circle:first-child,
+.piece.selected polygon,
+.piece.selected rect {
+  stroke: #ffeb3b;
+  stroke-width: 0.6;
+}
+
+.animator-toolbar,
+.animator-frames,
+.animation-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.6rem 0;
+}
+
+.animator button,
+.animation-controls button {
+  width: auto;
+  margin: 0;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.85rem;
+}
+
+.animator-frames label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.animator-frames select {
+  width: auto;
+  margin: 0;
+  padding: 0.2rem 2rem 0.2rem 0.5rem;
+}
+
+.frame-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.frame-button {
+  min-width: 2.2rem;
+}
+
+.animator-help {
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
+}
+
+.animator-error {
+  color: #c62828;
+}
+
+.frame-counter {
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
 }
