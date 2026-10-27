@@ -129,12 +129,12 @@ const skillThemes = {
   all: { color: "#0172ad", quote: "Playing football is very simple, but playing simple football is the hardest thing there is. - Johan Cruyff", tint: "rgba(14, 37, 237, 0.25)", image: "https://i.pinimg.com/1200x/03/e3/8e/03e38ec1c60e677cc2a871a1a35dfa7d.jpg" },
   "Finishing": { color: "#c62828", quote: "Even if I miss one time, I will shoot the second time. If I lose the second time, I will shoot the third time. I'm not afraid. - Cristiano Ronaldo", tint: "rgba(194, 6, 6, 0.25)", image: "https://i.pinimg.com/736x/4d/66/72/4d66726ab5167c4ee7f4ba8d7f03396e.jpg" },
   "Passing": { color: "#2e7d32", quote: "The game is played with your head. Your legs are just the tools. - Andrea Pirlo", tint: "rgba(6, 194, 188, 0.25)", image: "https://i.pinimg.com/736x/04/50/49/04504931139240fb707f41f909e6c0c7.jpg" },
-  "Dribbling": { color: "#6a1b9a", quote: "Keep it close. Keep your head up." },
-  "Defending": { color: "#37474f", quote: "Stay on your feet. Make them decide." },
-  "Ball Control": { color: "#ef6c00", quote: "Your first touch sets up everything after it." },
-  "Fitness": { color: "#00838f", quote: "Fit players still think clearly in the last ten minutes." },
-  warmup: { color: "#f9a825", quote: "Get loose. Get touches. Get ready." },
-  cooldown: { color: "#5c6bc0", quote: "Recover today so you can train tomorrow." }
+  "Dribbling": { color: "#6a1b9a", quote: "All those dribblers, I couldn't do as they did, so I created something for myself. - Jeremy Doku", tint:"rgba(75, 10, 140,0.25)", image: "https://i.pinimg.com/736x/1f/ba/07/1fba07b1170d4818816dd3f571ea3b80.jpg" },
+  "Defending": { color: "#37474f", quote: "Put another way, defending is our first offensive action. - Jurgen Klopp", tint: "rgba(84, 81, 87,0.25)", image: "https://i.pinimg.com/736x/24/7d/94/247d9491b95ef09c7bb2160a7b0dba16.jpg"  },
+  "Ball Control": { color: "#ef6c00", quote: "The basics for me is the first touch... First touch in football is so important... With that you create your own time. - Dimitar Berbatov", tint: "rgba(209, 129, 17,0.25)", image: "https://i.pinimg.com/736x/98/57/4f/98574fa7732ca1b568c670941d8cfb9a.jpg" },
+  "Fitness": { color: "#00838f", quote: "If you are not prepared to run, you should not play the game. - Roy Keane", tint: "rgba(30, 209, 17,0.25)", image:"https://i.pinimg.com/1200x/92/fe/17/92fe177011e270bd9c0595ce72f82021.jpg" },
+  warmup: { color: "#f9a825", quote: "“I start early and I stay late, day after day, year after year. - Lionel Messi", tint: "rgba(9, 11, 173,0.25)", image:"https://i.pinimg.com/1200x/b2/66/31/b266314115b51326eb3a0e4a90cee7e6.jpg" },
+  cooldown: { color: "#5c6bc0", quote: "For me, recovery is as important as training. - Cristiano Ronaldo", rgba(8, 116, 204,0.25), image:"https://i.pinimg.com/1200x/b8/00/41/b8004132d0cd253c11f68a145617a4de.jpg" }
 };
 
 function applySkillTheme(skill) {
