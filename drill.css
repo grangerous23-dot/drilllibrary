@@ -11,8 +11,9 @@ nav {
 
 .filter-btn.active,
 .tab-btn.active {
-  background: var(--pico-primary-background);
-  color: var(--pico-primary-inverse);
+  background: var(--theme-color);
+  border-color: var(--theme-color);
+  color: #fff;
 }
 #drill-grid {
   display: grid;
