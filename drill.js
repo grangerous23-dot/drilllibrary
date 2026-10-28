@@ -480,12 +480,16 @@ function mediaHTML(drill) {
   return `<img src="${escapeHTML(url)}" alt="${escapeHTML(drill.name)} diagram">`;
 }
 
-// The banner theme (color, image, tint) that matches a drill's main skill
+// The banner theme (color, image, tint) for a drill's page.
+// Warm-up and cool-down drills always use the warm-up / cool-down theme;
+// other drills use the theme of their first skill that has one.
 function themeForDrill(drill) {
+  if (drill.phase && skillThemes[drill.phase]) return skillThemes[drill.phase];
+
   const skill = drillSkills(drill).find(function (name) {
     return skillThemes[name];
   });
-  return skillThemes[skill] || skillThemes[drill.phase] || skillThemes.all;
+  return skillThemes[skill] || skillThemes.all;
 }
 
 // Turns a coach's description into paragraphs and lists:
