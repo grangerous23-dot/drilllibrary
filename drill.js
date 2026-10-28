@@ -264,17 +264,20 @@ const sessionParts = [
 
 // ---------- Drill library ----------
 // A color, quote and (optional) image for each skill.
+// tint: the color laid over the image (matched to the player's kit). The last number is the strength.
+// position: which part of the photo to keep when it's cropped. "center 20%" keeps the top of the
+//   photo (where heads usually are). Use a smaller % to show more of the top, bigger to show lower down.
 // The banner changes to match whichever skill is picked in the dropdown.
 const skillThemes = {
   all: { color: "#0172ad", quote: "Playing football is very simple, but playing simple football is the hardest thing there is. - Johan Cruyff", tint: "rgba(14, 37, 237, 0.25)", image: "https://i.pinimg.com/1200x/03/e3/8e/03e38ec1c60e677cc2a871a1a35dfa7d.jpg" },
-  "Finishing": { color: "#c62828", quote: "Even if I miss one time, I will shoot the second time. If I lose the second time, I will shoot the third time. I'm not afraid. - Cristiano Ronaldo", tint: "rgba(194, 6, 6, 0.25)", image: "https://upload.wikimedia.org/wikipedia/commons/a/a2/2009-3-14_ManUtd_vs_LFC_Ronaldo_Freekick_Front.JPG?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" },
-  "Passing": { color: "#2e7d32", quote: "The game is played with your head. Your legs are just the tools. - Andrea Pirlo", tint: "rgba(6, 194, 188, 0.25)", image: "https://upload.wikimedia.org/wikipedia/commons/8/8e/Andrea_Pirlo_v_Singapore_XI_2014.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" },
-  "Dribbling": { color: "#6a1b9a", quote: "All those dribblers, I couldn't do as they did, so I created something for myself. - Jeremy Doku", tint:"rgba(75, 10, 140,0.25)", image: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Jeremy_Doku_Belgium_v_USA_6_July_2026-212.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" },
-  "Defending": { color: "#37474f", quote: "Put another way, defending is our first offensive action. - Jurgen Klopp", tint: "rgba(84, 81, 87,0.25)", image: "https://upload.wikimedia.org/wikipedia/commons/e/ec/2022-07-21_Fu%C3%9Fball%2C_M%C3%A4nner%2CFreundschaftsspiel%2C_RB_Leipzig_-_FC_Liverpool_1DX_2240_by_Stepro.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"  },
-  "Ball Control": { color: "#ef6c00", quote: "The basics for me is the first touch... First touch in football is so important... With that you create your own time. - Dimitar Berbatov", tint: "rgba(209, 129, 17,0.25)", image: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Dimitar_Berbatov_Fulham_v_WBA_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" },
-  "Fitness": { color: "#00838f", quote: "I always want to be the player who runs the most, who fights the most. If you have the fitness, you have the confidence to dominate the 90th minute. - N'Golo Kanté", tint: "rgba(30, 209, 17,0.25)", image:"https://upload.wikimedia.org/wikipedia/commons/e/ea/France_-_Argentina_2018.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" },
-  warmup: { color: "#f9a825", quote: "I start early and I stay late, day after day, year after year. - Lionel Messi", tint: "rgba(9, 11, 173,0.25)", image:"https://upload.wikimedia.org/wikipedia/commons/4/41/Messi_ball.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" },
-  cooldown: { color: "#5c6bc0", quote: "For me, recovery is as important as training. - Cristiano Ronaldo", tint: "rgba(8, 116, 204, 0.25)", image: "https://upload.wikimedia.org/wikipedia/commons/4/40/Cristiano_Ronaldo_0889.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" }
+  "Finishing": { color: "#c62828", quote: "Even if I miss one time, I will shoot the second time. If I lose the second time, I will shoot the third time. I'm not afraid. - Cristiano Ronaldo", tint: "rgba(218, 41, 28, 0.3)", image: "https://upload.wikimedia.org/wikipedia/commons/a/a2/2009-3-14_ManUtd_vs_LFC_Ronaldo_Freekick_Front.JPG?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original", position: "center 20%" },
+  "Passing": { color: "#2e7d32", quote: "The game is played with your head. Your legs are just the tools. - Andrea Pirlo", tint: "rgba(15, 15, 15, 0.35)", image: "https://upload.wikimedia.org/wikipedia/commons/8/8e/Andrea_Pirlo_v_Singapore_XI_2014.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original", position: "center 20%" },
+  "Dribbling": { color: "#6a1b9a", quote: "All those dribblers, I couldn't do as they did, so I created something for myself. - Jeremy Doku", tint:"rgba(200, 16, 46, 0.3)", image: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Jeremy_Doku_Belgium_v_USA_6_July_2026-212.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original", position: "center 20%" },
+  "Defending": { color: "#37474f", quote: "Put another way, defending is our first offensive action. - Jurgen Klopp", tint: "rgba(200, 16, 46, 0.3)", image: "https://upload.wikimedia.org/wikipedia/commons/e/ec/2022-07-21_Fu%C3%9Fball%2C_M%C3%A4nner%2CFreundschaftsspiel%2C_RB_Leipzig_-_FC_Liverpool_1DX_2240_by_Stepro.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original", position: "center 20%" },
+  "Ball Control": { color: "#ef6c00", quote: "The basics for me is the first touch... First touch in football is so important... With that you create your own time. - Dimitar Berbatov", tint: "rgba(0, 0, 0, 0.35)", image: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Dimitar_Berbatov_Fulham_v_WBA_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original", position: "center 20%" },
+  "Fitness": { color: "#00838f", quote: "I always want to be the player who runs the most, who fights the most. If you have the fitness, you have the confidence to dominate the 90th minute. - N'Golo Kanté", tint: "rgba(0, 38, 84, 0.35)", image:"https://upload.wikimedia.org/wikipedia/commons/e/ea/France_-_Argentina_2018.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original", position: "center 20%" },
+  warmup: { color: "#f9a825", quote: "I start early and I stay late, day after day, year after year. - Lionel Messi", tint: "rgba(0, 77, 152, 0.3)", image:"https://upload.wikimedia.org/wikipedia/commons/4/41/Messi_ball.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original", position: "center 20%" },
+  cooldown: { color: "#5c6bc0", quote: "For me, recovery is as important as training. - Cristiano Ronaldo", tint: "rgba(165, 0, 33, 0.3)", image: "https://upload.wikimedia.org/wikipedia/commons/4/40/Cristiano_Ronaldo_0889.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original", position: "center 20%" }
 };
 
 let activeLayer = 0; // which of the two image layers is showing
@@ -293,6 +296,7 @@ function applySkillTheme(skill) {
   layers[activeLayer].style.backgroundImage = theme.image
     ? `linear-gradient(${tint}, ${tint}), url("${theme.image}")`
     : "";
+  layers[activeLayer].style.backgroundPosition = theme.position || "center";
   layers[activeLayer].classList.add("visible");
   layers[1 - activeLayer].classList.remove("visible");
 }
@@ -633,6 +637,7 @@ function openDrill(drill) {
   if (theme.image) {
     hero.style.backgroundImage =
       `linear-gradient(90deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.45) 60%, rgba(0,0,0,0.25) 100%), url("${theme.image}")`;
+    hero.style.backgroundPosition = theme.position || "center";
   }
 
   if (drill.animation && typeof createAnimationPlayer === "function" && isValidAnimation(drill.animation)) {
