@@ -65,6 +65,10 @@ header nav {
   grid-auto-columns: 1fr;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  /* Stretch the tabs across the whole page, like the banner */
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 0 1.5rem;
 }
 
 header nav .tab-btn {
@@ -561,6 +565,7 @@ button.secondary {
   position: relative;
 }
 #skill-quote {
+  color: #fff; /* Pico makes paragraphs gray, which disappears on the dark banner */
   margin: 0;
   font-size: 1.4rem;
   font-style: italic;
@@ -896,6 +901,18 @@ body {
   .drill-hero-inner {
     padding: 4rem 1.25rem 1.5rem;
   }
+}
+
+/* "by Coach Sam" on cards and the drill page */
+.card-author {
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
+  margin: -0.5rem 0 0.5rem !important;
+}
+
+.drill-hero .hero-author {
+  margin: 0 0 0.75rem;
+  opacity: 0.9;
 }
 
 /* Short description on drill cards, cut off after 2 lines */

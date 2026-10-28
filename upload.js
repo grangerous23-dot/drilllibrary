@@ -26,6 +26,7 @@ function drillFromRow(row) {
     mediaUrl: row.media_url,
     mediaType: row.media_type,
     mediaPath: row.media_path,
+    authorName: row.author_name || null, // null means the coach posted anonymously
     animation: isValidAnimation(row.animation) ? row.animation : null
   };
 }
@@ -153,11 +154,16 @@ function openDrillForm(drill) {
     formField("f-players").value = drill.playerCount || "";
     formField("f-phase").value = drill.phase || "";
     formField("f-equipment").value = drill.equipment || "";
+    formField("f-author").value = drill.authorName || savedDisplayName();
+    formField("f-anonymous").checked = !drill.authorName;
     showMediaPreview(safeMediaUrl(drill.mediaUrl), drill.mediaType);
     if (drill.animation) startAnimationEditor(drill.animation);
   } else {
+    formField("f-author").value = savedDisplayName();
+    formField("f-anonymous").checked = false;
     showMediaPreview(null);
   }
+  updateAuthorField();
 
   uploadDialog.showModal();
   uploadDialog.querySelector("article").scrollTop = 0;
@@ -241,6 +247,18 @@ formField("f-animation-remove").addEventListener("click", function () {
   askConfirm("Remove the animation?", "The pieces and steps you've made will be deleted.", "Remove", removeAnimationEditor);
 });
 
+// The name this coach used last time, so they don't have to type it again
+function savedDisplayName() {
+  return (currentUser && currentUser.user_metadata && currentUser.user_metadata.display_name) || "";
+}
+
+// "Post anonymously" greys out the name box
+function updateAuthorField() {
+  formField("f-author").disabled = formField("f-anonymous").checked;
+}
+
+formField("f-anonymous").addEventListener("change", updateAuthorField);
+
 // ---------- Saving ----------
 
 function chosenSkills() {
@@ -295,6 +313,12 @@ formField("drill-form").addEventListener("submit", async function (event) {
   if (skills.length === 0) return showUploadMessage("Pick at least one skill.", true);
   if (players && (players < 1 || players > 50)) return showUploadMessage("Players should be between 1 and 50.", true);
 
+  const anonymous = formField("f-anonymous").checked;
+  const authorName = formField("f-author").value.trim();
+  if (!anonymous && !authorName) {
+    return showUploadMessage("Add your name, or tick \"Post anonymously\".", true);
+  }
+
   const submit = formField("upload-submit");
   submit.disabled = true;
   submit.setAttribute("aria-busy", "true");
@@ -326,7 +350,8 @@ formField("drill-form").addEventListener("submit", async function (event) {
       media_url: media.url,
       media_type: media.type,
       media_path: media.path,
-      animation: animationEditor ? animationEditor.getAnimation() : null
+      animation: animationEditor ? animationEditor.getAnimation() : null,
+      author_name: anonymous ? null : authorName
     };
 
     let saved;
@@ -339,6 +364,11 @@ formField("drill-form").addEventListener("submit", async function (event) {
       const { data, error } = await supabaseClient.from("drills").insert(row).select().single();
       if (error) throw error;
       saved = data;
+    }
+
+    // Remember their name for next time (stored on their account, not shown anywhere else)
+    if (!anonymous && authorName !== savedDisplayName() && supabaseClient.auth.updateUser) {
+      supabaseClient.auth.updateUser({ data: { display_name: authorName } });
     }
 
     // The old photo/video was replaced or removed, so delete the file
@@ -354,7 +384,12 @@ formField("drill-form").addEventListener("submit", async function (event) {
   } catch (error) {
     // Don't leave an uploaded file behind if saving the drill failed
     if (newUpload) deleteMediaFile(newUpload.path);
-    showUploadMessage("Couldn't save the drill: " + error.message, true);
+    if (String(error.message).includes("author_name")) {
+      // The database hasn't been updated for creator names yet
+      showUploadMessage("The database needs one update before drills can be saved: run supabase-authors.sql in Supabase (see SUPABASE_SETUP.md).", true);
+    } else {
+      showUploadMessage("Couldn't save the drill: " + error.message, true);
+    }
     submit.disabled = false;
     submit.removeAttribute("aria-busy");
   }

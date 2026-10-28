@@ -16,6 +16,8 @@ create table public.drills (
   player_count int check (player_count between 1 and 50),
   skill text not null check (char_length(skill) between 1 and 300),
   equipment text check (char_length(equipment) <= 200),
+  -- The name shown as the drill's creator. Empty (null) means the coach posted anonymously.
+  author_name text check (char_length(author_name) between 1 and 60),
   media_url text,
   media_type text check (media_type in ('image', 'video')),
   media_path text,
