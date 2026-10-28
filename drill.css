@@ -903,6 +903,18 @@ body {
   }
 }
 
+/* "by Coach Sam" on cards and the drill page */
+.card-author {
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
+  margin: -0.5rem 0 0.5rem !important;
+}
+
+.drill-hero .hero-author {
+  margin: 0 0 0.75rem;
+  opacity: 0.9;
+}
+
 /* Short description on drill cards, cut off after 2 lines */
 .card-summary {
   color: var(--pico-muted-color);

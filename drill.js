@@ -312,6 +312,13 @@ function escapeHTML(text) {
     .replace(/'/g, "&#39;");
 }
 
+// Who made a drill: built-in drills come with the site, uploaded ones show the coach's name
+// (or "Anonymous coach" if they chose to stay anonymous)
+function drillAuthor(drill) {
+  if (!drill.uploaded) return "Drill Library";
+  return drill.authorName || "Anonymous coach";
+}
+
 // True if the logged-in coach uploaded this drill (currentUser lives in sessions.js)
 function isMyDrill(drill) {
   return typeof currentUser !== "undefined" && currentUser !== null && drill.userId === currentUser.id;
@@ -357,6 +364,7 @@ function renderDrills(drillList) {
           ${isMyDrill(drill) ? `<span class="phase-tag tag-mine">Your drill</span>` : ""}
         </div>
         <h3>${escapeHTML(drill.name)}</h3>
+        <p class="card-author">by ${escapeHTML(drillAuthor(drill))}</p>
         <p class="card-summary">${escapeHTML(drill.description)}</p>
         <p>Skill: ${escapeHTML(drill.skill)}</p>
         <p>Difficulty: ${escapeHTML(drill.difficulty)}</p>
@@ -382,7 +390,7 @@ function applyFilters() {
       return false;
     }
     if (search) {
-      const text = (drill.name + " " + drill.description + " " + drill.skill).toLowerCase();
+      const text = (drill.name + " " + drill.description + " " + drill.skill + " " + drillAuthor(drill)).toLowerCase();
       if (!text.includes(search)) return false;
     }
     return true;
@@ -590,6 +598,7 @@ function openDrill(drill) {
           ${isMyDrill(drill) ? `<span class="chip chip-mine">Your drill</span>` : ""}
         </div>
         <h2>${escapeHTML(drill.name)}</h2>
+        <p class="hero-author">Created by <strong>${escapeHTML(drillAuthor(drill))}</strong></p>
         ${drill.steps ? `<p class="hero-summary">${escapeHTML(drill.description)}</p>` : ""}
         <div class="hero-skills">
           ${drillSkills(drill).map(function (skill) {
