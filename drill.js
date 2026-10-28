@@ -274,7 +274,7 @@ const skillThemes = {
   "Ball Control": { color: "#ef6c00", quote: "The basics for me is the first touch... First touch in football is so important... With that you create your own time. - Dimitar Berbatov", tint: "rgba(209, 129, 17,0.25)", image: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Dimitar_Berbatov_Fulham_v_WBA_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" },
   "Fitness": { color: "#00838f", quote: "If you are not prepared to run, you should not play the game. - Roy Keane", tint: "rgba(30, 209, 17,0.25)", image:"https://i.pinimg.com/1200x/92/fe/17/92fe177011e270bd9c0595ce72f82021.jpg" },
   warmup: { color: "#f9a825", quote: "I start early and I stay late, day after day, year after year. - Lionel Messi", tint: "rgba(9, 11, 173,0.25)", image:"https://i.pinimg.com/1200x/b2/66/31/b266314115b51326eb3a0e4a90cee7e6.jpg" },
-  cooldown: { color: "#5c6bc0", quote: "For me, recovery is as important as training. - Cristiano Ronaldo", tint: "rgba(8, 116, 204, 0.25)", image: "https://i.pinimg.com/1200x/b8/00/41/b8004132d0cd253c11f68a145617a4de.jpg" }
+  cooldown: { color: "#5c6bc0", quote: "For me, recovery is as important as training. - Cristiano Ronaldo", tint: "rgba(8, 116, 204, 0.25)", image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/Cristiano_Ronaldo_0889.jpg/960px-Cristiano_Ronaldo_0889.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail" }
 };
 
 let activeLayer = 0; // which of the two image layers is showing
