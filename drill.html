@@ -76,7 +76,7 @@
 <dialog id="drill-dialog" class="fullscreen-dialog">
   <article>
     <div id="drill-detail"></div>
-    <button id="close-dialog">Close</button>
+    <button id="close-dialog" aria-label="Close">✕</button>
   </article>
 </dialog>
 <dialog id="confirm-dialog">
@@ -99,6 +99,7 @@
       <label>Description
         <textarea id="f-description" rows="5" maxlength="3000" required
           placeholder="How the drill works, coaching points, ways to make it easier or harder..."></textarea>
+        <small>Tip: start a line with <strong>1.</strong> for numbered steps or <strong>-</strong> for bullet points.</small>
       </label>
       <div class="form-row">
         <label>Type

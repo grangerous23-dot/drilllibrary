@@ -8,6 +8,19 @@ const drills = [
     difficulty: "Beginner",
     equipment: "cones",
     description: "Dribble through a line of cones using both feet.",
+    setup: "6–8 cones in a straight line, about 1 meter apart. One ball per player.",
+    steps: [
+      "Dribble in and out of the cones using only the inside of your feet.",
+      "Turn at the last cone and come back using only the outside of your feet.",
+      "Next round, use your weaker foot only.",
+      "Finish with a sprint back to the start."
+    ],
+    coachingPoints: [
+      "Keep the ball close, a small touch every step",
+      "Head up between touches to see the next cone",
+      "Stay on the balls of your feet, knees bent",
+      "Speed up only once you're clean through the cones"
+    ],
     gif: "images/cone-weave.gif",
   },
   {
@@ -18,6 +31,19 @@ const drills = [
     difficulty: "Beginner",
     equipment: "ball, wall",
     description: "Improve passing accuracy, high repetitions.",
+    setup: "A solid wall and a ball. Mark a line 3–5 meters from the wall.",
+    steps: [
+      "Pass the ball against the wall with the inside of your foot.",
+      "Control the rebound with one touch, then pass again.",
+      "After 20 passes, switch to your other foot.",
+      "Progress to one-touch passing, then move the line further back."
+    ],
+    coachingPoints: [
+      "Plant foot next to the ball, pointing at the target",
+      "Strike through the middle of the ball to keep it on the ground",
+      "Lock your ankle, toe up",
+      "Cushion the return so it stops in front of you"
+    ],
     gif: "images/wall-passing.gif",
   },
   {
@@ -28,6 +54,19 @@ const drills = [
     difficulty: "Beginner",
     equipment: "ball",
     description: "Launch ball into air, control with foot.",
+    setup: "One ball per player and some open space.",
+    steps: [
+      "Toss the ball into the air, about head height.",
+      "Control it with your foot so it drops dead in front of you.",
+      "Repeat with thigh, then chest, then your weaker foot.",
+      "Count clean controls in a row and try to beat your record."
+    ],
+    coachingPoints: [
+      "Get in line with the ball early",
+      "Relax the controlling surface and pull it back slightly on contact",
+      "Watch the ball all the way onto your foot",
+      "Your first touch should set up your next action"
+    ],
     gif: "images/first-touch-game.gif"
   },
   {
@@ -39,6 +78,19 @@ const drills = [
     difficulty: "Intermediate",
     equipment: "ball, goal",
     description: "Practice attacking and defending in a 1v1 scenario.",
+    setup: "A 10 × 15 meter area with a goal at one end. One attacker, one defender.",
+    steps: [
+      "The defender passes to the attacker and closes them down.",
+      "The attacker tries to beat the defender and score.",
+      "If the defender wins the ball, they counter to a line at the other end.",
+      "Swap roles after each round."
+    ],
+    coachingPoints: [
+      "Attacker: attack the defender's front foot at speed",
+      "Attacker: use a change of direction or pace to get past",
+      "Defender: close down quickly, then slow down as you arrive",
+      "Defender: stay side-on and show the attacker one way"
+    ],
     gif: "images/1v1-attack-defend.gif"
   },
   {
@@ -50,6 +102,19 @@ const drills = [
     difficulty: "Intermediate",
     equipment: "ball",
     description: "Keep possession in a small area while defenders try to intercept.",
+    setup: "A 10 × 10 meter square. 5 players on the outside, 2 defenders in the middle.",
+    steps: [
+      "The outside players keep the ball away from the defenders.",
+      "Count passes: 10 in a row scores a point.",
+      "A defender who wins the ball swaps with the player who lost it.",
+      "Make it harder with a two-touch limit, then one-touch."
+    ],
+    coachingPoints: [
+      "Open your body so you can see the next pass",
+      "Move to make a passing angle, don't hide behind defenders",
+      "Pass to the foot away from the defender",
+      "Defenders: work as a pair and cut off the middle pass"
+    ],
     gif: "images/rondos.gif",
   },
   {
@@ -61,6 +126,19 @@ const drills = [
     difficulty: "Intermediate",
     equipment: "ball, goal",
     description: "A 2v2 game focusing on dribbling and passing.",
+    setup: "A 20 × 15 meter pitch with a small goal at each end. Two teams of two.",
+    steps: [
+      "Play 2v2 games of 2–3 minutes.",
+      "Teams try to combine with passes or dribbles to score.",
+      "Rest one round, then play again with new pairs.",
+      "Add a rule: a goal after a give-and-go counts double."
+    ],
+    coachingPoints: [
+      "The player without the ball moves to give a passing option",
+      "Dribble when there's space, pass when you draw a defender",
+      "Defend as a pair: one presses, the other covers",
+      "Switch quickly from attack to defense when you lose it"
+    ],
     gif: "images/2v2.gif",
   },
   {
@@ -71,7 +149,20 @@ const drills = [
     skill: "Fitness",
     difficulty: "Beginner",
     equipment: "cones",
-    description: "Jog between two lines of cones doing high knees, butt kicks, side shuffles and leg swings."
+    description: "Jog between two lines of cones doing high knees, butt kicks, side shuffles and leg swings.",
+    setup: "Two lines of cones about 15 meters apart.",
+    steps: [
+      "Jog between the cones and back.",
+      "High knees, then butt kicks.",
+      "Side shuffles facing each way.",
+      "Open and close the gate (hip rotations), then leg swings.",
+      "Finish with two short sprints at 75% speed."
+    ],
+    coachingPoints: [
+      "Start easy and build intensity each round",
+      "Keep moving, no static stretching before training",
+      "Good posture: chest up, arms working"
+    ]
   },
   {
     id: 8,
@@ -82,7 +173,19 @@ const drills = [
     skill: "Passing",
     difficulty: "Beginner",
     equipment: "ball",
-    description: "Partners pass back and forth at walking pace, then jogging, using both feet."
+    description: "Partners pass back and forth at walking pace, then jogging, using both feet.",
+    setup: "Players in pairs, 8–10 meters apart, one ball per pair.",
+    steps: [
+      "Pass back and forth with the inside of the foot while walking on the spot.",
+      "After a minute, move on your toes and receive across your body.",
+      "Pass with your weaker foot only.",
+      "Finish with one-touch passing at match pace."
+    ],
+    coachingPoints: [
+      "Be on your toes before the ball arrives",
+      "Receive with the foot furthest from your partner",
+      "Firm, accurate passes along the ground"
+    ]
   },
   {
     id: 9,
@@ -92,7 +195,19 @@ const drills = [
     skill: "Fitness",
     difficulty: "Beginner",
     equipment: "none",
-    description: "Two slow laps of the field, then hold each stretch (quads, hamstrings, calves, hips) for 20-30 seconds."
+    description: "Two slow laps of the field, then hold each stretch (quads, hamstrings, calves, hips) for 20-30 seconds.",
+    setup: "The whole field, after training.",
+    steps: [
+      "Two slow laps of the field.",
+      "Walk for a minute to bring your breathing down.",
+      "Hold each stretch for 20–30 seconds: quads, hamstrings, calves, hip flexors, groin.",
+      "Drink water and talk through the session."
+    ],
+    coachingPoints: [
+      "Never bounce in a stretch, hold it steady",
+      "Breathe slowly and relax into it",
+      "Stretch both sides equally"
+    ]
   },
   {
     id: 10,
@@ -102,7 +217,19 @@ const drills = [
     skill: "Ball Control",
     difficulty: "Beginner",
     equipment: "ball",
-    description: "Relaxed juggling at your own pace to bring the heart rate down while keeping a touch on the ball."
+    description: "Relaxed juggling at your own pace to bring the heart rate down while keeping a touch on the ball.",
+    setup: "One ball per player.",
+    steps: [
+      "Juggle at your own pace using both feet.",
+      "Mix in thighs and finish with a few headers.",
+      "Try to beat your personal best for the session.",
+      "Slow your breathing down as you go."
+    ],
+    coachingPoints: [
+      "Small, soft touches, ball no higher than your waist",
+      "Lock the ankle and use your laces",
+      "Stay relaxed, this is a cool-down, not a test"
+    ]
   },
   {
     id: 11,
@@ -111,7 +238,20 @@ const drills = [
     skill: "Finishing",
     difficulty: "Intermediate",
     equipment: "balls, cones, goal",
-    description: "Dribble around a cone and shoot from the edge of the box. Alternate feet and aim for the corners."
+    description: "Dribble around a cone and shoot from the edge of the box. Alternate feet and aim for the corners.",
+    setup: "A goal with a goalkeeper (or targets in the corners). Cones 25 meters out, balls at the start.",
+    steps: [
+      "Dribble at the cone and go round it.",
+      "Take a touch out of your feet toward goal.",
+      "Shoot from the edge of the box, aiming for a corner.",
+      "Next round, go round the cone the other way and shoot with the other foot."
+    ],
+    coachingPoints: [
+      "Pick your corner before you shoot",
+      "Head over the ball to keep the shot low",
+      "Strike with your laces, follow through toward the target",
+      "Hit the target first, power second"
+    ]
   }
 ];
 
@@ -205,7 +345,7 @@ function renderDrills(drillList) {
 
   const cardsHTML = drillList.map(function (drill) {
     return `
-      <div data-id="${escapeHTML(drill.id)}" class="drill-card" tabindex="0" role="button">
+      <div data-id="${escapeHTML(drill.id)}" class="drill-card" tabindex="0">
         <div class="card-tags">
           ${drill.phase ? `<span class="phase-tag">${partLabel(drill.phase)}</span>` : ""}
           ${drill.animation ? `<span class="phase-tag tag-light">▶ Animated</span>` : ""}
@@ -213,6 +353,7 @@ function renderDrills(drillList) {
           ${isMyDrill(drill) ? `<span class="phase-tag tag-mine">Your drill</span>` : ""}
         </div>
         <h3>${escapeHTML(drill.name)}</h3>
+        <p class="card-summary">${escapeHTML(drill.description)}</p>
         <p>Skill: ${escapeHTML(drill.skill)}</p>
         <p>Difficulty: ${escapeHTML(drill.difficulty)}</p>
         ${drill.playerCount ? `<p>Players: ${escapeHTML(drill.playerCount)}</p>` : ""}
@@ -335,36 +476,164 @@ function mediaHTML(drill) {
   return `<img src="${escapeHTML(url)}" alt="${escapeHTML(drill.name)} diagram">`;
 }
 
+// The banner theme (color, image, tint) that matches a drill's main skill
+function themeForDrill(drill) {
+  const skill = drillSkills(drill).find(function (name) {
+    return skillThemes[name];
+  });
+  return skillThemes[skill] || skillThemes[drill.phase] || skillThemes.all;
+}
+
+// Turns a coach's description into paragraphs and lists:
+// lines starting with "-" or "•" become bullet points, lines starting with "1." become numbered steps
+function formatDescription(text) {
+  const blocks = [];
+  let list = null;
+
+  String(text || "").split("\n").forEach(function (rawLine) {
+    const line = rawLine.trim();
+    const bullet = line.match(/^[-•*]\s+(.*)/);
+    const numbered = line.match(/^\d+[.)]\s+(.*)/);
+
+    if (bullet || numbered) {
+      const type = bullet ? "ul" : "ol";
+      if (!list || list.type !== type) {
+        list = { type: type, items: [] };
+        blocks.push(list);
+      }
+      list.items.push((bullet || numbered)[1]);
+    } else {
+      list = null;
+      if (line) blocks.push({ type: "p", text: line });
+    }
+  });
+
+  return blocks.map(function (block) {
+    if (block.type === "p") return `<p>${escapeHTML(block.text)}</p>`;
+    const items = block.items.map(function (item) {
+      return `<li>${escapeHTML(item)}</li>`;
+    }).join("");
+    return `<${block.type}>${items}</${block.type}>`;
+  }).join("");
+}
+
+function listHTML(tag, items) {
+  return `<${tag}>${items.map(function (item) {
+    return `<li>${escapeHTML(item)}</li>`;
+  }).join("")}</${tag}>`;
+}
+
+// The written part of the drill page: setup, steps and coaching points if the drill has them,
+// otherwise the coach's description
+function drillSectionsHTML(drill) {
+  if (!drill.steps) {
+    return `
+      <section class="drill-section">
+        <h3>About this drill</h3>
+        <div class="drill-description">${formatDescription(drill.description)}</div>
+      </section>
+    `;
+  }
+
+  return `
+    ${drill.setup ? `
+      <section class="drill-section">
+        <h3>Setup</h3>
+        <p>${escapeHTML(drill.setup)}</p>
+      </section>` : ""}
+    <section class="drill-section">
+      <h3>How it works</h3>
+      ${listHTML("ol", drill.steps)}
+    </section>
+    ${drill.coachingPoints ? `
+      <section class="drill-section coaching-points">
+        <h3>Coaching points</h3>
+        ${listHTML("ul", drill.coachingPoints)}
+      </section>` : ""}
+  `;
+}
+
+function factHTML(label, value) {
+  if (!value) return "";
+  return `
+    <div class="fact">
+      <dt>${label}</dt>
+      <dd>${escapeHTML(value)}</dd>
+    </div>
+  `;
+}
+
 function openDrill(drill) {
   const detail = document.getElementById("drill-detail");
   if (!detail) return;
   stopPlayer();
 
-  const hasVisuals = drill.animation || drill.mediaUrl || drill.gif;
+  const hasVisuals = Boolean(drill.animation || safeMediaUrl(drill.mediaUrl) || drill.gif);
+  const theme = themeForDrill(drill);
 
   detail.innerHTML = `
-    <h2>${escapeHTML(drill.name)}</h2>
-    <div class="detail-layout">
-      <div class="detail-text">
-        <p>Skill: ${escapeHTML(drill.skill)}</p>
-        <p>Difficulty: ${escapeHTML(drill.difficulty)}</p>
-        ${drill.playerCount ? `<p>Players: ${escapeHTML(drill.playerCount)}</p>` : ""}
-        <p>Equipment: ${escapeHTML(drill.equipment || "N/A")}</p>
-        <p class="drill-description">${escapeHTML(drill.description)}</p>
-        <button id="add-to-session">Add to session</button>
-        ${isMyDrill(drill) ? `
-          <div class="owner-buttons">
-            <button id="edit-drill" class="secondary">Edit drill</button>
-            <button id="delete-drill" class="secondary">Delete drill</button>
-          </div>` : ""}
+    <header class="drill-hero">
+      <div class="drill-hero-inner">
+        <div class="hero-tags">
+          <span class="chip">${drill.category === "group" ? "Group" : "Individual"}</span>
+          <span class="chip">${escapeHTML(drill.difficulty)}</span>
+          ${drill.phase ? `<span class="chip">${partLabel(drill.phase)}</span>` : ""}
+          ${drill.animation ? `<span class="chip">▶ Animated</span>` : ""}
+          ${isMyDrill(drill) ? `<span class="chip chip-mine">Your drill</span>` : ""}
+        </div>
+        <h2>${escapeHTML(drill.name)}</h2>
+        ${drill.steps ? `<p class="hero-summary">${escapeHTML(drill.description)}</p>` : ""}
+        <div class="hero-skills">
+          ${drillSkills(drill).map(function (skill) {
+            return `<span class="chip chip-outline">${escapeHTML(skill)}</span>`;
+          }).join("")}
+        </div>
       </div>
-      ${hasVisuals ? `
-        <div class="detail-diagram">
-          ${drill.animation ? `<div id="drill-animation"></div>` : ""}
-          ${mediaHTML(drill)}
-        </div>` : ""}
+    </header>
+
+    <div class="drill-body ${hasVisuals ? "" : "no-visuals"}">
+      <div class="drill-main">
+        ${hasVisuals ? `
+          <div class="drill-visuals">
+            ${drill.animation ? `<div class="visual-card" id="drill-animation"></div>` : ""}
+            ${mediaHTML(drill) ? `<div class="visual-card">${mediaHTML(drill)}</div>` : ""}
+          </div>` : ""}
+        ${drillSectionsHTML(drill)}
+      </div>
+
+      <aside class="drill-side">
+        <div class="side-card">
+          <h3>At a glance</h3>
+          <dl class="facts">
+            ${factHTML("Players", drill.playerCount ? String(drill.playerCount) : (drill.category === "individual" ? "1" : ""))}
+            ${factHTML("Level", drill.difficulty)}
+            ${factHTML("Type", drill.category === "group" ? "Group" : "Individual")}
+            ${factHTML("Session part", drill.phase ? partLabel(drill.phase) : "Main session")}
+          </dl>
+          ${drill.equipment ? `
+            <div class="equipment">
+              <span class="equipment-label">Equipment</span>
+              <p>${escapeHTML(drill.equipment)}</p>
+            </div>` : ""}
+          <button id="add-to-session" class="add-big">+ Add to session</button>
+          ${isMyDrill(drill) ? `
+            <div class="owner-buttons">
+              <button id="edit-drill" class="secondary">Edit drill</button>
+              <button id="delete-drill" class="secondary">Delete drill</button>
+            </div>` : ""}
+        </div>
+      </aside>
     </div>
   `;
+
+  // Header uses the skill's banner image and color, darkened so the white text is readable
+  const hero = detail.querySelector(".drill-hero");
+  detail.style.setProperty("--theme-color", theme.color); // step numbers, buttons etc. match this drill
+  hero.style.backgroundColor = theme.color;
+  if (theme.image) {
+    hero.style.backgroundImage =
+      `linear-gradient(90deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.45) 60%, rgba(0,0,0,0.25) 100%), url("${theme.image}")`;
+  }
 
   if (drill.animation && typeof createAnimationPlayer === "function" && isValidAnimation(drill.animation)) {
     currentPlayer = createAnimationPlayer(document.getElementById("drill-animation"), drill.animation);
@@ -389,6 +658,7 @@ function openDrill(drill) {
   const dialog = document.getElementById("drill-dialog");
   if (dialog && typeof dialog.showModal === "function") {
     dialog.showModal();
+    dialog.querySelector("article").scrollTop = 0;
   }
 }
 
