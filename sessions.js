@@ -343,14 +343,26 @@ document.getElementById("account-area").addEventListener("click", async function
   }
 });
 
+// The account popup has three modes: "login", "signup" and "reset" (forgot password)
 function setAccountMode(mode) {
   accountMode = mode;
   const isLogin = mode === "login";
-  document.getElementById("account-title").textContent = isLogin ? "Log in" : "Create an account";
-  document.getElementById("account-submit").textContent = isLogin ? "Log in" : "Sign up";
-  document.getElementById("account-switch-text").textContent = isLogin ? "Don't have an account?" : "Already have an account?";
+  const isReset = mode === "reset";
+  const titles = { login: "Log in", signup: "Create an account", reset: "Reset your password" };
+  const buttons = { login: "Log in", signup: "Sign up", reset: "Send reset link" };
+
+  document.getElementById("account-title").textContent = titles[mode];
+  document.getElementById("account-submit").textContent = buttons[mode];
+  document.getElementById("account-switch-text").textContent =
+    isLogin ? "Don't have an account?" : isReset ? "Remembered it?" : "Already have an account?";
   document.getElementById("account-switch").textContent = isLogin ? "Sign up" : "Log in";
-  document.getElementById("account-password").autocomplete = isLogin ? "current-password" : "new-password";
+
+  // Resetting only needs the email, so hide the password box
+  const password = document.getElementById("account-password");
+  document.getElementById("password-row").hidden = isReset;
+  password.required = !isReset;
+  password.autocomplete = isLogin ? "current-password" : "new-password";
+  document.getElementById("forgot-password").hidden = !isLogin;
 }
 
 function showAccountMessage(text, isError) {
@@ -364,6 +376,12 @@ document.getElementById("account-switch").addEventListener("click", function (ev
   event.preventDefault();
   setAccountMode(accountMode === "login" ? "signup" : "login");
   showAccountMessage("");
+});
+
+document.getElementById("forgot-password").addEventListener("click", function (event) {
+  event.preventDefault();
+  setAccountMode("reset");
+  showAccountMessage("Enter your email and we'll send you a link to choose a new password.");
 });
 
 document.getElementById("account-cancel").addEventListener("click", function () {
@@ -381,7 +399,19 @@ document.getElementById("account-form").addEventListener("submit", async functio
   submit.setAttribute("aria-busy", "true");
   showAccountMessage("");
 
-  if (accountMode === "signup") {
+  if (accountMode === "reset") {
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+      // Where the link in the email sends them back to
+      redirectTo: window.location.origin + window.location.pathname
+    });
+
+    if (error) {
+      showAccountMessage(error.message, true);
+    } else {
+      // Same message either way, so nobody can use this to check which emails have accounts
+      showAccountMessage("If there's an account for " + email + ", we've sent it a reset link. Check your email (and your spam folder).");
+    }
+  } else if (accountMode === "signup") {
     const { data, error } = await supabaseClient.auth.signUp({
       email: email,
       password: password,
@@ -473,6 +503,9 @@ if (supabaseClient) {
   let firstCheck = true;
 
   supabaseClient.auth.onAuthStateChange(function (event, authSession) {
+    // They clicked the link in a "reset your password" email
+    if (event === "PASSWORD_RECOVERY") setTimeout(openNewPasswordDialog, 0);
+
     const user = authSession ? authSession.user : null;
     const userChanged = (user ? user.id : null) !== (currentUser ? currentUser.id : null);
     currentUser = user;
@@ -487,6 +520,57 @@ if (supabaseClient) {
     }, 0);
   });
 }
+
+// ---------- Choosing a new password (after clicking the reset link) ----------
+
+const passwordDialog = document.getElementById("password-dialog");
+
+function showPasswordMessage(text, isError) {
+  const message = document.getElementById("password-message");
+  message.textContent = text;
+  message.hidden = !text;
+  message.classList.toggle("error", Boolean(isError));
+}
+
+function openNewPasswordDialog() {
+  document.getElementById("password-form").reset();
+  showPasswordMessage("");
+  if (accountDialog.open) accountDialog.close();
+  passwordDialog.showModal();
+}
+
+document.getElementById("password-cancel").addEventListener("click", function () {
+  passwordDialog.close();
+});
+
+document.getElementById("password-form").addEventListener("submit", async function (event) {
+  event.preventDefault();
+
+  const password = document.getElementById("new-password").value;
+  const again = document.getElementById("new-password-again").value;
+  if (password !== again) {
+    showPasswordMessage("The two passwords don't match.", true);
+    return;
+  }
+
+  const submit = document.getElementById("password-submit");
+  submit.disabled = true;
+  submit.setAttribute("aria-busy", "true");
+
+  const { error } = await supabaseClient.auth.updateUser({ password: password });
+
+  submit.disabled = false;
+  submit.removeAttribute("aria-busy");
+
+  if (error) {
+    showPasswordMessage(error.message, true);
+  } else {
+    showPasswordMessage("Password changed! You're logged in.");
+    setTimeout(function () {
+      passwordDialog.close();
+    }, 1500);
+  }
+});
 
 // ---------- Start ----------
 

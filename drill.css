@@ -336,8 +336,23 @@ button.secondary {
   padding: 1.5rem;
 }
 
-#account-message.error {
+#account-message.error,
+#password-message.error {
   color: #c62828;
+}
+
+#password-dialog article {
+  width: 100%;
+  max-width: 28rem;
+  margin: 0;
+  padding: 1.5rem;
+}
+
+.forgot-link {
+  display: block;
+  margin: -0.5rem 0 1rem;
+  font-size: 0.9rem;
+  text-align: right;
 }
 
 .account-switch {

@@ -175,12 +175,27 @@
     </form>
   </article>
 </dialog>
+<dialog id="password-dialog">
+  <article>
+    <h3>Choose a new password</h3>
+    <form id="password-form">
+      <label>New password <input type="password" id="new-password" required minlength="6" autocomplete="new-password"></label>
+      <label>Type it again <input type="password" id="new-password-again" required minlength="6" autocomplete="new-password"></label>
+      <p id="password-message" hidden></p>
+      <div class="confirm-buttons">
+        <button type="button" id="password-cancel" class="secondary">Cancel</button>
+        <button type="submit" id="password-submit">Save new password</button>
+      </div>
+    </form>
+  </article>
+</dialog>
 <dialog id="account-dialog">
   <article>
     <h3 id="account-title">Log in</h3>
     <form id="account-form">
       <label>Email <input type="email" id="account-email" required autocomplete="email"></label>
-      <label>Password <input type="password" id="account-password" required minlength="6" autocomplete="current-password"></label>
+      <label id="password-row">Password <input type="password" id="account-password" required minlength="6" autocomplete="current-password"></label>
+      <a href="#" id="forgot-password" class="forgot-link">Forgot password?</a>
       <p id="account-message" hidden></p>
       <div class="confirm-buttons">
         <button type="button" id="account-cancel" class="secondary">Cancel</button>
