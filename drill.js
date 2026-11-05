@@ -737,6 +737,7 @@ if (closeDialogButton) {
 // ---------- Session planner ----------
 
 let sessionName = "";
+let sessionNotes = ""; // the coach's notes for the whole session
 // The id of the saved session that's open in My Session, or null if it hasn't been saved yet
 let currentSessionId = null;
 
@@ -815,6 +816,12 @@ function renderItem(item, index) {
           </select>
         </label>
         ${sessionFields(item, index)}
+      </div>
+      <div class="item-notes">
+        ${typeof item.notes === "string"
+          ? `<textarea class="session-input note-input" data-index="${index}" data-field="notes" rows="2" maxlength="1000"
+               placeholder="Your notes for this drill (e.g. swap pairs after 5 minutes)">${escapeHTML(item.notes)}</textarea>`
+          : `<button type="button" class="add-note" data-action="note" data-index="${index}">+ Add a note</button>`}
       </div>
     </li>
   `;
@@ -904,6 +911,12 @@ document.getElementById("session-list").addEventListener("input", function (even
     return;
   }
 
+  if (field === "notes") {
+    item.notes = event.target.value;
+    saveSession(); // no redraw, so the box you're typing in keeps focus
+    return;
+  }
+
   item[field] = Number(event.target.value);
 
   // Update just this drill's minutes and the total, so the box you're typing in keeps focus
@@ -921,6 +934,15 @@ document.getElementById("session-list").addEventListener("click", function (even
   const index = Number(button.dataset.index);
   const action = button.dataset.action;
 
+  if (action === "note") {
+    // Show a notes box for this drill and put the cursor in it
+    session[index].notes = "";
+    renderSession();
+    const box = document.querySelector('.note-input[data-index="' + index + '"]');
+    if (box) box.focus();
+    return;
+  }
+
   if (action === "remove") {
     session.splice(index, 1);
   } else if (action === "up" || action === "down") {
@@ -937,6 +959,11 @@ document.getElementById("session-list").addEventListener("click", function (even
 
 document.getElementById("session-name").addEventListener("input", function (event) {
   sessionName = event.target.value;
+  saveSession();
+});
+
+document.getElementById("session-notes").addEventListener("input", function (event) {
+  sessionNotes = event.target.value;
   saveSession();
 });
 
@@ -971,7 +998,7 @@ document.getElementById("print-session").addEventListener("click", function () {
 // (Clicking "Save session" is different: that adds it to Saved Sessions - see sessions.js.)
 function saveSession() {
   try {
-    localStorage.setItem("drill-session", JSON.stringify({ name: sessionName, items: session, savedId: currentSessionId }));
+    localStorage.setItem("drill-session", JSON.stringify({ name: sessionName, notes: sessionNotes, items: session, savedId: currentSessionId }));
   } catch (error) {
     // Storage can be blocked (e.g. private browsing) - the planner still works, it just won't be saved
   }
@@ -984,6 +1011,7 @@ function loadSession() {
     const saved = JSON.parse(localStorage.getItem("drill-session"));
     if (!saved) return;
     sessionName = saved.name || "";
+    sessionNotes = saved.notes || "";
     currentSessionId = saved.savedId || null;
     // Keep every drill, even ones not found yet: uploaded drills load a moment later
     session = saved.items || [];
@@ -994,6 +1022,7 @@ function loadSession() {
     session = [];
   }
   document.getElementById("session-name").value = sessionName;
+  document.getElementById("session-notes").value = sessionNotes;
 }
 
 // ---------- Tabs ----------

@@ -1,5 +1,5 @@
 -- Run this once in Supabase (SQL Editor -> New query -> paste -> Run)
--- if your drills table was made before these were added. Safe to run more than once.
+-- if your tables were made before these were added. Safe to run more than once.
 
 -- The name shown as "Created by ..." (empty means the coach posted anonymously)
 alter table public.drills
@@ -16,3 +16,7 @@ alter table public.drills
 alter table public.drills
   add column if not exists coaching_points jsonb
   check (jsonb_typeof(coaching_points) = 'array' and jsonb_array_length(coaching_points) <= 15);
+
+-- Coach's notes for a whole saved session (notes for single drills are kept inside items)
+alter table public.sessions
+  add column if not exists notes text check (char_length(notes) <= 2000);

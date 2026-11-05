@@ -55,6 +55,10 @@
 
   <section id="session-view" hidden>
     <input type="text" id="session-name" placeholder="Session name (e.g. U12 Tuesday Practice)" aria-label="Session name">
+    <label class="session-notes-label">Session notes
+      <textarea id="session-notes" rows="3" maxlength="2000"
+        placeholder="Your notes for the whole session: the focus, reminders, who's missing..."></textarea>
+    </label>
     <p id="session-empty">No drills yet. Go to the Drills tab and click "Add to session".</p>
     <div id="session-list"></div>
     <p id="session-total"></p>
