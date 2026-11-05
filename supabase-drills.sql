@@ -21,6 +21,10 @@ create table public.drills (
   media_url text,
   media_type text check (media_type in ('image', 'video')),
   media_path text,
+  -- Setup, numbered steps and coaching points from the Add a drill form
+  setup text check (char_length(setup) <= 600),
+  steps jsonb check (jsonb_typeof(steps) = 'array' and jsonb_array_length(steps) <= 15),
+  coaching_points jsonb check (jsonb_typeof(coaching_points) = 'array' and jsonb_array_length(coaching_points) <= 15),
   -- The animation (pieces and steps), as built in the animator
   animation jsonb check (pg_column_size(animation) < 200000),
   created_at timestamptz not null default now()

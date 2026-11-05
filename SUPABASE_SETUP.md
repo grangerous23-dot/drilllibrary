@@ -18,8 +18,8 @@ Until you do this, the site still works. Saved sessions are just kept in the bro
 Then do the same with [`supabase-drills.sql`](supabase-drills.sql). It creates the `drills` table for drills coaches upload,
 and a `drill-media` storage bucket for their photos and videos.
 
-If you set up the drills table before creator names were added, also run
-[`supabase-authors.sql`](supabase-authors.sql) once. It adds the `author_name` column.
+If you set up the drills table before creator names and the setup / steps / coaching points
+fields were added, also run [`supabase-drill-details.sql`](supabase-drill-details.sql) once.
 
 ## 3. Connect the site
 
