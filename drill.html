@@ -96,11 +96,26 @@
       <label>Drill name
         <input type="text" id="f-name" maxlength="100" required>
       </label>
-      <label>Description
-        <textarea id="f-description" rows="5" maxlength="3000" required
-          placeholder="How the drill works, coaching points, ways to make it easier or harder..."></textarea>
-        <small>Tip: start a line with <strong>1.</strong> for numbered steps or <strong>-</strong> for bullet points.</small>
+      <label>Summary
+        <textarea id="f-description" rows="2" maxlength="600" required
+          placeholder="One or two sentences: what the drill is and what it works on."></textarea>
       </label>
+      <label>Setup
+        <textarea id="f-setup" rows="2" maxlength="600"
+          placeholder="The space, where the cones go, how many players and where they start."></textarea>
+      </label>
+      <fieldset class="form-box">
+        <legend>How it works</legend>
+        <ol id="f-steps" class="list-editor"></ol>
+        <button type="button" class="secondary" data-add-row="f-steps">+ Add step</button>
+        <small>One step per box, in order. Press Enter to add the next step.</small>
+      </fieldset>
+      <fieldset class="form-box">
+        <legend>Coaching points</legend>
+        <ul id="f-points" class="list-editor"></ul>
+        <button type="button" class="secondary" data-add-row="f-points">+ Add point</button>
+        <small>What players should focus on, e.g. "Head up before you pass".</small>
+      </fieldset>
       <div class="form-row">
         <label>Type
           <select id="f-category">

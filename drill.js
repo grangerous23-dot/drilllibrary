@@ -390,7 +390,10 @@ function applyFilters() {
       return false;
     }
     if (search) {
-      const text = (drill.name + " " + drill.description + " " + drill.skill + " " + drillAuthor(drill)).toLowerCase();
+      const text = [drill.name, drill.description, drill.skill, drillAuthor(drill), drill.setup]
+        .concat(drill.steps || [], drill.coachingPoints || [])
+        .join(" ")
+        .toLowerCase();
       if (!text.includes(search)) return false;
     }
     return true;

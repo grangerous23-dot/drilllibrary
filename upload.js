@@ -23,12 +23,24 @@ function drillFromRow(row) {
     difficulty: row.difficulty,
     equipment: row.equipment,
     description: row.description,
+    setup: row.setup || undefined,
+    steps: cleanList(row.steps),
+    coachingPoints: cleanList(row.coaching_points),
     mediaUrl: row.media_url,
     mediaType: row.media_type,
     mediaPath: row.media_path,
     authorName: row.author_name || null, // null means the coach posted anonymously
     animation: isValidAnimation(row.animation) ? row.animation : null
   };
+}
+
+// A list from the database (steps or coaching points), or null if there isn't one
+function cleanList(list) {
+  if (!Array.isArray(list)) return null;
+  const items = list.filter(function (item) {
+    return typeof item === "string" && item.trim();
+  });
+  return items.length ? items : null;
 }
 
 async function loadUploadedDrills() {
@@ -104,6 +116,94 @@ function showMediaPreview(url, type) {
   formField("f-media-remove").hidden = !url;
 }
 
+// ---------- Step and coaching point lists ----------
+
+const MAX_LIST_ROWS = 15;
+const LIST_PLACEHOLDERS = {
+  "f-steps": "e.g. The winger passes inside to the striker",
+  "f-points": "e.g. Time your run so you arrive as the pass is played"
+};
+
+function addListRow(listId, value, afterRow) {
+  const list = formField(listId);
+  if (list.children.length >= MAX_LIST_ROWS) return null;
+
+  const row = document.createElement("li");
+  row.innerHTML = `
+    <div class="list-row">
+      <input type="text" maxlength="250">
+      <button type="button" class="secondary remove-row" aria-label="Remove">✕</button>
+    </div>
+  `;
+  const input = row.querySelector("input");
+  input.value = value || "";
+  input.placeholder = LIST_PLACEHOLDERS[listId];
+
+  if (afterRow) afterRow.after(row);
+  else list.appendChild(row);
+  return input;
+}
+
+// Fill a list with items, plus empty boxes so there are at least `minRows`
+function fillList(listId, items, minRows) {
+  formField(listId).innerHTML = "";
+  (items || []).forEach(function (item) {
+    addListRow(listId, item);
+  });
+  while (formField(listId).children.length < minRows) addListRow(listId, "");
+}
+
+// The text in each box, skipping empty ones
+function listValues(listId) {
+  const values = [];
+  formField(listId).querySelectorAll("input").forEach(function (input) {
+    if (input.value.trim()) values.push(input.value.trim());
+  });
+  return values;
+}
+
+// Older uploaded drills have everything in one description. Pull out its numbered lines
+// as steps and its "-" lines as coaching points, so editing them fills the new boxes.
+function splitOldDescription(text) {
+  const result = { summary: [], steps: [], points: [] };
+  String(text || "").split("\n").forEach(function (rawLine) {
+    const line = rawLine.trim();
+    const numbered = line.match(/^\d+[.)]\s+(.*)/);
+    const bullet = line.match(/^[-•*]\s+(.*)/);
+    if (numbered) result.steps.push(numbered[1]);
+    else if (bullet) result.points.push(bullet[1]);
+    else if (line) result.summary.push(line);
+  });
+  return { summary: result.summary.join("\n"), steps: result.steps, points: result.points };
+}
+
+document.querySelectorAll("[data-add-row]").forEach(function (button) {
+  button.addEventListener("click", function () {
+    const input = addListRow(button.dataset.addRow, "");
+    if (input) input.focus();
+  });
+});
+
+["f-steps", "f-points"].forEach(function (listId) {
+  const list = formField(listId);
+
+  // ✕ removes a box (the last one just gets cleared)
+  list.addEventListener("click", function (event) {
+    if (!event.target.classList.contains("remove-row")) return;
+    const row = event.target.closest("li");
+    if (list.children.length > 1) row.remove();
+    else row.querySelector("input").value = "";
+  });
+
+  // Enter adds a new box below instead of submitting the form
+  list.addEventListener("keydown", function (event) {
+    if (event.key !== "Enter" || event.target.tagName !== "INPUT") return;
+    event.preventDefault();
+    const input = addListRow(listId, "", event.target.closest("li"));
+    if (input) input.focus();
+  });
+});
+
 function startAnimationEditor(animation) {
   formField("f-animation-start").hidden = true;
   formField("f-animation-remove").hidden = false;
@@ -148,7 +248,17 @@ function openDrillForm(drill) {
 
   if (drill) {
     formField("f-name").value = drill.name;
-    formField("f-description").value = drill.description;
+    if (drill.steps) {
+      formField("f-description").value = drill.description;
+      formField("f-setup").value = drill.setup || "";
+      fillList("f-steps", drill.steps, 1);
+      fillList("f-points", drill.coachingPoints, 1);
+    } else {
+      const old = splitOldDescription(drill.description);
+      formField("f-description").value = old.summary;
+      fillList("f-steps", old.steps, 3);
+      fillList("f-points", old.points, 2);
+    }
     formField("f-category").value = drill.category;
     formField("f-difficulty").value = drill.difficulty;
     formField("f-players").value = drill.playerCount || "";
@@ -159,6 +269,8 @@ function openDrillForm(drill) {
     showMediaPreview(safeMediaUrl(drill.mediaUrl), drill.mediaType);
     if (drill.animation) startAnimationEditor(drill.animation);
   } else {
+    fillList("f-steps", [], 3);
+    fillList("f-points", [], 2);
     formField("f-author").value = savedDisplayName();
     formField("f-anonymous").checked = false;
     showMediaPreview(null);
@@ -186,6 +298,9 @@ function formHasContent() {
     editingDrill ||
     formField("f-name").value.trim() ||
     formField("f-description").value.trim() ||
+    formField("f-setup").value.trim() ||
+    listValues("f-steps").length ||
+    listValues("f-points").length ||
     mediaFile ||
     (animationEditor && animationEditor.getAnimation())
   );
@@ -309,7 +424,10 @@ formField("drill-form").addEventListener("submit", async function (event) {
   const players = formField("f-players").value;
 
   if (!name) return showUploadMessage("Give your drill a name.", true);
-  if (!description) return showUploadMessage("Add a description so coaches know how to run it.", true);
+  const steps = listValues("f-steps");
+  const points = listValues("f-points");
+  if (!description) return showUploadMessage("Add a short summary of the drill.", true);
+  if (steps.length === 0) return showUploadMessage("Add at least one step under \"How it works\".", true);
   if (skills.length === 0) return showUploadMessage("Pick at least one skill.", true);
   if (players && (players < 1 || players > 50)) return showUploadMessage("Players should be between 1 and 50.", true);
 
@@ -341,6 +459,9 @@ formField("drill-form").addEventListener("submit", async function (event) {
     const row = {
       name: name,
       description: description,
+      setup: formField("f-setup").value.trim() || null,
+      steps: steps,
+      coaching_points: points.length ? points : null,
       category: formField("f-category").value,
       difficulty: formField("f-difficulty").value,
       player_count: players ? Number(players) : null,
@@ -384,9 +505,12 @@ formField("drill-form").addEventListener("submit", async function (event) {
   } catch (error) {
     // Don't leave an uploaded file behind if saving the drill failed
     if (newUpload) deleteMediaFile(newUpload.path);
-    if (String(error.message).includes("author_name")) {
-      // The database hasn't been updated for creator names yet
-      showUploadMessage("The database needs one update before drills can be saved: run supabase-authors.sql in Supabase (see SUPABASE_SETUP.md).", true);
+    const message = String(error.message);
+    if (["author_name", "setup", "steps", "coaching_points"].some(function (column) {
+      return message.includes("'" + column + "'");
+    })) {
+      // The database is missing one of the newer columns
+      showUploadMessage("The database needs an update before drills can be saved: run supabase-drill-details.sql in Supabase (see SUPABASE_SETUP.md).", true);
     } else {
       showUploadMessage("Couldn't save the drill: " + error.message, true);
     }

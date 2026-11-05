@@ -455,6 +455,35 @@ button.secondary {
   width: auto;
 }
 
+/* Step and coaching point boxes in the Add a drill form */
+.list-editor {
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.list-editor li {
+  margin-bottom: 0.5rem;
+}
+
+/* Each box with its ✕ button next to it */
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.list-row input {
+  flex: 1;
+  margin: 0;
+}
+
+.list-row .remove-row {
+  flex: none;
+  width: 2.75rem;
+  margin: 0;
+  padding: 0.5rem 0;
+}
+
 #upload-message.error {
   color: #c62828;
 }
