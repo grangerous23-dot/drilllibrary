@@ -29,7 +29,7 @@ function sessionDisplayName() {
 // (We list the fields ourselves because the database can store them in a different order.)
 function itemsKey(items) {
   return JSON.stringify(items.map(function (item) {
-    return [item.id, item.part, item.type, item.minutes, item.reps, item.sets, item.work, item.rest];
+    return [item.id, item.part, item.type, item.minutes, item.reps, item.sets, item.work, item.rest, item.notes || ""];
   }));
 }
 
@@ -37,7 +37,11 @@ function hasUnsavedChanges() {
   if (session.length === 0) return false;
   const saved = findSaved(currentSessionId);
   if (!saved) return true;
-  return saved.name !== sessionDisplayName() || itemsKey(saved.items) !== itemsKey(session);
+  return (
+    saved.name !== sessionDisplayName() ||
+    (saved.notes || "") !== sessionNotes ||
+    itemsKey(saved.items) !== itemsKey(session)
+  );
 }
 
 // ---------- Saving in the browser (when not logged in) ----------
@@ -71,7 +75,7 @@ async function loadSavedSessions() {
   if (currentUser) {
     const { data, error } = await supabaseClient
       .from("sessions")
-      .select("id, name, items, updated_at")
+      .select("*") // every column, so this still works before the notes column is added
       .order("updated_at", { ascending: false });
 
     if (error) {
@@ -79,7 +83,7 @@ async function loadSavedSessions() {
       savedSessions = [];
     } else {
       savedSessions = data.map(function (row) {
-        return { id: row.id, name: row.name, items: row.items, updatedAt: row.updated_at };
+        return { id: row.id, name: row.name, notes: row.notes || "", items: row.items, updatedAt: row.updated_at };
       });
     }
   } else {
@@ -108,13 +112,13 @@ async function saveCurrentSession() {
       if (existing) {
         const { error } = await supabaseClient
           .from("sessions")
-          .update({ name: name, items: items, updated_at: new Date().toISOString() })
+          .update({ name: name, notes: sessionNotes || null, items: items, updated_at: new Date().toISOString() })
           .eq("id", currentSessionId);
         if (error) throw error;
       } else {
         const { data, error } = await supabaseClient
           .from("sessions")
-          .insert({ name: name, items: items })
+          .insert({ name: name, notes: sessionNotes || null, items: items })
           .select("id")
           .single();
         if (error) throw error;
@@ -128,10 +132,10 @@ async function saveCurrentSession() {
       });
 
       if (index !== -1) {
-        list[index] = { id: currentSessionId, name: name, items: items, updatedAt: now };
+        list[index] = { id: currentSessionId, name: name, notes: sessionNotes, items: items, updatedAt: now };
       } else {
         currentSessionId = makeLocalId();
-        list.push({ id: currentSessionId, name: name, items: items, updatedAt: now });
+        list.push({ id: currentSessionId, name: name, notes: sessionNotes, items: items, updatedAt: now });
       }
 
       if (!writeLocalSessions(list)) {
@@ -139,7 +143,9 @@ async function saveCurrentSession() {
       }
     }
   } catch (error) {
-    document.getElementById("save-status").textContent = "Couldn't save: " + error.message;
+    document.getElementById("save-status").textContent = String(error.message).includes("'notes'")
+      ? "Couldn't save: the database needs an update - run supabase-drill-details.sql in Supabase."
+      : "Couldn't save: " + error.message;
     button.disabled = false;
     button.removeAttribute("aria-busy");
     return;
@@ -163,6 +169,7 @@ function openSavedSession(id) {
 
   function open() {
     sessionName = saved.name;
+    sessionNotes = saved.notes || "";
     currentSessionId = saved.id;
     // Skip drills that are no longer in the library
     session = saved.items
@@ -173,6 +180,7 @@ function openSavedSession(id) {
         return Object.assign({ part: "main" }, item);
       });
     document.getElementById("session-name").value = sessionName;
+    document.getElementById("session-notes").value = sessionNotes;
     renderSession();
     renderSavedSessions();
     showTab("session-view");
@@ -221,8 +229,10 @@ function startNewSession() {
   function startNew() {
     session = [];
     sessionName = "";
+    sessionNotes = "";
     currentSessionId = null;
     document.getElementById("session-name").value = "";
+    document.getElementById("session-notes").value = "";
     renderSession();
     renderSavedSessions();
   }
@@ -253,6 +263,7 @@ function renderSavedSessions() {
             ${saved.id === currentSessionId ? `<span class="open-tag">Open</span>` : ""}
           </h3>
           <p>${count} ${count === 1 ? "drill" : "drills"} · ${formatMinutes(minutes)} min · Saved ${date}</p>
+          ${saved.notes ? `<p class="saved-notes">📝 ${escapeHTML(saved.notes)}</p>` : ""}
         </div>
         <div class="saved-buttons">
           <button data-action="open" data-id="${saved.id}">Open</button>
@@ -453,7 +464,7 @@ async function moveLocalSessionsToAccount() {
   for (const saved of local) {
     const { data, error } = await supabaseClient
       .from("sessions")
-      .insert({ name: saved.name, items: saved.items, updated_at: saved.updatedAt })
+      .insert({ name: saved.name, notes: saved.notes || null, items: saved.items, updated_at: saved.updatedAt })
       .select("id")
       .single();
 
