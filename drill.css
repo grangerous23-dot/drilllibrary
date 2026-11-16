@@ -245,6 +245,54 @@ button.secondary {
   border-color: var(--pico-primary);
 }
 
+/* ---------- Coach notes ---------- */
+
+.session-notes-label textarea {
+  margin-top: 0.25rem;
+}
+
+.item-notes {
+  margin-top: 0.5rem;
+}
+
+.item-notes textarea {
+  margin: 0;
+  font-size: 0.95rem;
+  background: #fffbea; /* a little like a sticky note */
+}
+
+.add-note {
+  width: auto;
+  margin: 0;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.85rem;
+  background: transparent;
+  border: 1px dashed var(--pico-muted-border-color);
+  color: var(--pico-muted-color);
+}
+
+.saved-notes {
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60ch;
+}
+
+@media print {
+  .add-note {
+    display: none !important;
+  }
+
+  .item-notes textarea,
+  #session-notes {
+    border: none;
+    resize: none;
+    background: none;
+    padding: 0;
+  }
+}
+
 /* ---------- Saved sessions ---------- */
 
 .session-actions {

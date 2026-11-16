@@ -6,6 +6,8 @@ create table public.sessions (
   -- Which coach the session belongs to. Filled in automatically from whoever is logged in.
   user_id uuid not null default auth.uid() references auth.users (id) on delete cascade,
   name text not null,
+  -- The coach's notes for the whole session
+  notes text check (char_length(notes) <= 2000),
   -- The drills in the session, exactly as the session planner stores them
   items jsonb not null default '[]'::jsonb,
   created_at timestamptz not null default now(),
