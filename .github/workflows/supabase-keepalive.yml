@@ -1,0 +1,53 @@
+# Keeps the free Supabase project from pausing.
+#
+# Supabase pauses free projects after about a week with no activity.
+# Every 3 days this reads one row from the public `drills` table, which counts as activity.
+#
+# It uses the same Project URL and publishable key as config.js (that key is meant to be public).
+# To use different values, add repo secrets named SUPABASE_URL and SUPABASE_KEY and they win.
+# Never use the secret / service_role key here.
+
+name: Supabase keep-alive
+
+on:
+  schedule:
+    - cron: "17 14 */3 * *" # about every 3 days, 14:17 UTC
+  workflow_dispatch: # lets you run it by hand from the Actions tab
+
+permissions:
+  contents: read
+  actions: write # only used to keep this scheduled workflow switched on
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ping Supabase
+        env:
+          SECRET_URL: ${{ secrets.SUPABASE_URL }}
+          SECRET_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          URL="${SECRET_URL:-$(sed -n 's/^const SUPABASE_URL = "\(.*\)";/\1/p' config.js)}"
+          KEY="${SECRET_KEY:-$(sed -n 's/^const SUPABASE_KEY = "\(.*\)";/\1/p' config.js)}"
+          if [ -z "$URL" ] || [ -z "$KEY" ]; then
+            echo "::error::No Supabase URL or key found in secrets or config.js"
+            exit 1
+          fi
+          STATUS=$(curl -sS -o /dev/null -w "%{http_code}" --retry 3 --max-time 30 \
+            "$URL/rest/v1/drills?select=id&limit=1" \
+            -H "apikey: $KEY")
+          echo "Supabase answered with HTTP $STATUS"
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::Supabase did not answer normally. If the project is paused, click Restore in the Supabase dashboard."
+            exit 1
+          fi
+
+      # GitHub switches off scheduled workflows in repos with no commits for 60 days.
+      # Re-enabling it on every run keeps it switched on.
+      - name: Keep this workflow switched on
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/supabase-keepalive.yml/enable" || true
